@@ -1,0 +1,27 @@
+.list-wrapper{
+    background-color: rgb(211,211,211);
+    border:thin;
+    border-style: solid;
+    border-color: black;
+}
+
+.list{
+    list-style: none;
+    padding-left: 0;
+}
+
+.list-item{
+    background-color: white;
+    border-color: lightgrey;
+    border-style: solid;
+    border-width: thin;
+    user-select: none;
+}
+
+.list-item:hover{
+    cursor: pointer;
+}
+
+.current-list-item{
+    background-color: rgb(214, 167, 47);
+}

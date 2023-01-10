@@ -1,0 +1,31 @@
+.song-list-wrapper{
+    background-color: lightgrey;
+    border-width: thin;
+    border-left-style: solid;
+    border-right-style: solid;
+    border-color: black;
+    padding: 10px;
+    width:90%;
+    height: calc(90vh - 150px);
+}
+
+.top-nav-wrapper{
+    display: flex;
+    width:100%;
+    height:150px;
+}
+
+.logo{
+    width:150px;
+    height:auto;
+}
+
+.content-wrapper{
+    display: flex;
+    width: 100%;
+}
+
+.side-menu-wrapper{
+    width:10%;
+    margin-right:8px;
+}

@@ -1,0 +1,27 @@
+<div class="radio-wrapper">
+    <button class="thin-radio-btn" (click)="previousClicked()">&lt;</button>
+    <button class="radio-btn" (click)="playClicked()">|></button>
+    <button class="radio-btn" (click)="pauseClicked()">||</button>
+    <button class="thin-radio-btn" (click)="nextClicked()">&gt;</button>
+    <div class="song-info-wraper">
+        <p class="song-name">{{currentSong?.name}}</p>
+        <div class="song-sub-info-wrapper">
+            <p class="song-sub-info">{{currentSong?.artist}}</p>
+            <p class="song-sub-info">{{currentSong?.album}}</p>
+        </div>
+    </div>
+    <mat-slider min="0" max="1" step="0.1" value="0.5" aria-label="volume" (change)="setNewVolume($event)"></mat-slider>
+    <button class="radio-btn" (click)="toggleQueue()">Queue</button>
+</div>
+<dialog #QueueDialog class="queue-dialog">
+    <div class="queue-menu">
+        <div class="clear-wrapper">
+            <button class="queue-clear" (click)="clearQueue()">Clear</button>
+        </div>
+        <button class="queue-close" (click)="toggleQueue()">X</button>
+    </div>
+    <ul class="queue-list">
+        <li *ngFor="let song of player.getQueue().queue; let queueIndex = index" [ngClass]="queueIndex%2===0? 'even-row' : 'odd-row'">{{song.name}}
+            <button (click)="removeFromQueue(queueIndex)">X</button></li>
+    </ul>
+</dialog>
