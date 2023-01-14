@@ -17,6 +17,19 @@ export class song {
       }
 };
 
+export class playlist {
+  id:string;
+  name:string;
+  songs:song[]
+
+
+  constructor(_id: string,_name: string,_songs: song[]) {
+      this.id = _id;
+      this.name = _name;
+      this.songs = _songs;
+    }
+};
+
 export class SongQueue{
   queue:song[]
 
@@ -48,6 +61,22 @@ export class SongQueue{
 
   remove(index){
     this.queue.splice(index,1)
+  }
+
+  shuffleQueue(){
+    let currentIndex = this.queue.length,  randomIndex;
+
+    // While there remain elements to shuffle.
+    while (currentIndex != 0) {
+
+      // Pick a remaining element.
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+
+      // And swap it with the current element.
+      [this.queue[currentIndex], this.queue[randomIndex]] = [
+        this.queue[randomIndex], this.queue[currentIndex]];
+    }
   }
 
 };

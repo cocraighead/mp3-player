@@ -1,8 +1,9 @@
 <div class="list-wrapper">
     <ul class="list">
-        <li class="list-item" (click)="playlistClicked(playlist)" [ngClass]="{'current-list-item': playlist == currentPlaylist}" 
-        *ngFor="let playlist of playlists">
-            {{playlist}}
-        </li>
+        <ng-container *ngFor="let playlist of playlists">
+            <li class="list-item" (click)="playlistClicked(playlist)" [ngClass]="{'current-list-item': playlist.id == currentPlaylist.id}">
+                {{playlist.name}}
+            </li>
+        </ng-container>
     </ul>
 </div>

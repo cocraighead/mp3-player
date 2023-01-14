@@ -95,6 +95,14 @@
     padding: 5px;
 }
 
+.queue-song-flex{
+    display: flex;
+}
+
+.queue-song-name{
+    width: 95%;
+}
+
 .even-row{
     background-color: rgb(231,231,231);
 }
@@ -115,4 +123,24 @@
 
 .clear-wrapper{
     width:92%;
+}
+
+.queue-button-on{
+    height: 35px;
+    margin-right: 12px;
+    background-color: rgb(214, 167, 47);
+}
+
+.queue-button-off{
+    height: 35px;
+    margin-right: 12px;
+    background-color: none;
+}
+
+.queue-clear-button{
+    height: 35px;
+}
+
+.queue-close-button{
+    height: 20px;
 }

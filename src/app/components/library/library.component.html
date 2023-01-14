@@ -1,10 +1,10 @@
 <div class="top-nav-wrapper">
-    <img class="logo" src="assets/images/shiplogo.png">
+    <img class="logo" src="assets/images/shiplogo.png" (click)="addSongClicked()">
     <app-radio></app-radio>
 </div>
 <div class="content-wrapper">
     <div class="side-menu-wrapper">
-        <app-side-menu [playlists]="playlistNames" (playlistEvent)="switchPlaylist($event)"></app-side-menu>
+        <app-side-menu [playlists]="playlists" (playlistEvent)="switchPlaylist($event)"></app-side-menu>
     </div>
     <div class="song-list-wrapper">
         <app-song-list [songs]="currentSonglist"></app-song-list>

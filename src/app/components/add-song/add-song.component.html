@@ -1,0 +1,26 @@
+<div class="fields-wrapper">
+    <div class="back-arrow" (click)="backToLibrary()">&#8592;</div>
+    <div class="title">Add new song</div>
+</div>
+
+<form [formGroup]="newSongForm">
+
+    <div class="fields-wrapper">
+        <label for="youtubeLink">YouTube Link: </label>
+        <input id="youtubeLink" type="text" formControlName="youtubeLink">
+      
+        <label for="name">Song Name: </label>
+        <input id="name" type="text" formControlName="name">
+    
+        <label for="artist">Artist: </label>
+        <input id="artist" type="text" formControlName="artist">
+    
+        <label for="album">Album: </label>
+        <input id="album" type="text" formControlName="album">
+    
+        <button type="button" [ngClass]="{'active-submit-button': (newSongForm.valid && !loading)}" [disabled]="!newSongForm.valid || loading" (click)="submitNewSong()">Submit</button>
+    </div>
+    
+  
+  </form>
+<div *ngIf="loading">Loading</div>

@@ -31,11 +31,17 @@ export class SongListComponent implements OnInit,AfterViewInit, OnChanges {
   }
 
   songClicked(songClicked:song){
-    this.player.startPlaying(songClicked)
-    if(this.player.getQueue().empty()){
-      this.songs.forEach(song => {
-        this.player.getQueue().add(song)
-      })
+    var songListIndex = -1
+    for(var i=0;i<this.songs.length;i++){
+      if(this.songs[i].id === songClicked.id){
+        songListIndex = i
+      }
+    }
+    if(songListIndex !== -1){
+      var afterSongSongList = this.songs.slice(songListIndex+1)
+      var beforeSongSonglist = this.songs.slice(0,songListIndex)
+      var passSongList = afterSongSongList.concat(beforeSongSonglist)
+      this.player.playNew(songClicked, passSongList)
     }
   }
 

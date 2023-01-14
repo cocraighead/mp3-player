@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { HomeComponent } from './components/home/home.component';
 import { LibraryComponent } from './components/library/library.component';
+import { AddSongComponent } from './components/add-song/add-song.component';
 
 const routes: Routes = [
   { path: 'library', component: LibraryComponent, pathMatch: 'full' },
-  { path: 'home', component: HomeComponent, pathMatch: 'full' },
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  { path: 'add', component: AddSongComponent, pathMatch: 'full' },
+  { path: '', redirectTo: 'library', pathMatch: 'full' },
 ];
 
 @NgModule({

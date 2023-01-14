@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { MediatorService } from '../../services/mediator.service';
 
 import * as _ from 'lodash';
 
-import { song } from '../../types/types';
+import { song, playlist } from '../../types/types';
 
 // TODO
 // song meta data - songs data like image ect displays
@@ -23,21 +24,19 @@ import { song } from '../../types/types';
 })
 export class LibraryComponent implements OnInit {
 
-  constructor(private mediator: MediatorService) { }
+  constructor(private mediator: MediatorService, private router: Router) { }
 
   dataLoading = false
   songs:song[] = []
   currentSonglist:song[] = []
-  playlists:any = {}
-  playlistNames = []
-  currentPlaylistName = 'Songs'
+  playlists:playlist[] = []
 
   
   ngOnInit(): void {
     this.dataLoading = true
     this.mediator.getDB().subscribe((data:any)=>{
       this.setUpSongs(data.library)
-      this.setUpPlayLists()
+      this.setUpPlayLists(data.playlists)
       this.currentSonglist = this.songs
     })
   
@@ -50,21 +49,42 @@ export class LibraryComponent implements OnInit {
     })
   }
 
-  setUpPlayLists(){
-    this.playlistNames = ['Songs','Playlist 1','Playlist 2']
-    this.playlistNames.forEach(pl => {
-      if(pl === 'Songs'){
-        this.playlists[pl] = this.songs
-      }else if(pl === 'Playlist 1'){
-        this.playlists[pl] = this.songs.slice(0,15)
-      }else{
-        this.playlists[pl] = this.songs.slice(16,35)
+  getSong(songId:string){
+    for(var i=0;i<this.songs.length;i++){
+      if(this.songs[i].id == songId){
+        return this.songs[i]
       }
+    }
+    return {}
+  }
+
+  setUpPlayLists(playlistObject){
+    var keys = Object.keys(playlistObject)
+    if(keys.length === 0){
+      return
+    }
+    this.playlists.push({
+      id:'-1',
+      name: 'Songs',
+      songs: this.songs
+    })
+    keys.forEach((plId) => {
+      this.playlists.push({
+        id: plId,
+        name: playlistObject[plId].name,
+        songs: playlistObject[plId].songs.map((s)=>{
+          return this.getSong(s)
+        })
+      })
     })
   }
 
-  switchPlaylist(name){
-    this.currentSonglist = this.playlists[name]
+  switchPlaylist(playList:playlist){
+    this.currentSonglist = playList.songs
+  }
+
+  addSongClicked(){
+    this.router.navigate(['add']);
   }
 
 }

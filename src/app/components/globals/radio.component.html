@@ -16,12 +16,18 @@
 <dialog #QueueDialog class="queue-dialog">
     <div class="queue-menu">
         <div class="clear-wrapper">
-            <button class="queue-clear" (click)="clearQueue()">Clear</button>
+            <button [ngClass]="{'queue-button-on': player.shuffleOn, 'queue-button-off': !player.shuffleOn}" (click)="toggleShuffle()">shuffle</button>
+            <button [ngClass]="{'queue-button-on': player.loopOn, 'queue-button-off': !player.loopOn}" (click)="toggleLoop()">loop</button>
+            <button class="queue-clear-button" (click)="clearQueue()">clear</button>
         </div>
-        <button class="queue-close" (click)="toggleQueue()">X</button>
+        <button class="queue-close-button" (click)="toggleQueue()">X</button>
     </div>
     <ul class="queue-list">
-        <li *ngFor="let song of player.getQueue().queue; let queueIndex = index" [ngClass]="queueIndex%2===0? 'even-row' : 'odd-row'">{{song.name}}
-            <button (click)="removeFromQueue(queueIndex)">X</button></li>
+        <li *ngFor="let song of player.getQueue().queue; let queueIndex = index" [ngClass]="queueIndex%2===0? 'even-row' : 'odd-row'">
+            <div class="queue-song-flex">
+                <div class="queue-song-name">{{song.name}}</div>
+                <button (click)="removeFromQueue(queueIndex)">X</button>
+            </div>
+        </li>
     </ul>
 </dialog>

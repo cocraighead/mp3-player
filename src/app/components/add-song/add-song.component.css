@@ -1,0 +1,23 @@
+.fields-wrapper{
+    display:flex;
+    flex-direction: column;
+    width:800px;
+    margin: 14px; 
+}
+
+.active-submit-button{
+    background-color: rgb(214, 167, 47);
+}
+
+.title{
+    font-size: large;
+}
+
+.back-arrow{
+    color: rgb(214, 167, 47);
+    font-size: xx-large;
+}
+
+.back-arrow:hover{
+    cursor: pointer;
+}

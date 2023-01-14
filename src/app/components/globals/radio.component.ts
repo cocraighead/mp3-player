@@ -1,7 +1,6 @@
 import { Component, OnInit,ViewChild,ElementRef } from '@angular/core';
 
 import { PlayerService } from '../../services/player.service';
-
 import { song, SongQueue } from '../../types/types';
 
 @Component({
@@ -34,10 +33,7 @@ export class RadioComponent implements OnInit {
   }
 
   previousClicked(){
-    if(!this.player.getHistory().empty()){
-      if(this.player.currentSong) this.player.getQueue().addNext(this.player.currentSong)
-      this.player.startPlaying(this.player.getHistory().pop())
-    }
+    this.player.playPrevious()
   }
 
   setNewVolume(event:any){
@@ -64,4 +60,11 @@ export class RadioComponent implements OnInit {
     this.player.getQueue().clear()
   }
 
+  toggleShuffle(){
+    this.player.toggleShuffle()
+  }
+
+  toggleLoop(){
+    this.player.toggleLoop()
+  }
 }
