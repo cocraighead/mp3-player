@@ -25,3 +25,7 @@
 .current-list-item{
     background-color: rgb(214, 167, 47);
 }
+
+.hover-list-item{
+    background-color: rgb(144 223 210);
+}

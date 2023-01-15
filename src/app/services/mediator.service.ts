@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
+import { playlist, song } from '../types/types';
 
 @Injectable({
   providedIn: 'root'
@@ -28,6 +29,11 @@ export class MediatorService {
     var encodedUrl = encodeURIComponent(youtubeLink)
     var params = `?ytlink=${encodedUrl}&name=${name}&artist=${artist}&album=${album}`
     return this.http.get(this.serverURL+'/newsong'+params)
+  }
+
+  addSongToPlaylist(song:song, playlist:playlist){
+    var params = `?songid=${song.id}&playlistid=${playlist.id}`
+    return this.http.get(this.serverURL+'/addsongtoplaylist'+params)
   }
 
 }

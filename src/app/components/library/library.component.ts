@@ -7,6 +7,7 @@ import * as _ from 'lodash';
 import { song, playlist } from '../../types/types';
 
 // TODO
+// Edit song - add a artist album name album image
 // song meta data - songs data like image ect displays
 // history - history to queue
 // playlists - to db
@@ -66,7 +67,9 @@ export class LibraryComponent implements OnInit {
     this.playlists.push({
       id:'-1',
       name: 'Songs',
-      songs: this.songs
+      songs: this.songs,
+      canBeHovered: false,
+      isHovered: false
     })
     keys.forEach((plId) => {
       this.playlists.push({
@@ -74,7 +77,9 @@ export class LibraryComponent implements OnInit {
         name: playlistObject[plId].name,
         songs: playlistObject[plId].songs.map((s)=>{
           return this.getSong(s)
-        })
+        }),
+        canBeHovered: true,
+        isHovered: false
       })
     })
   }

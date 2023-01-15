@@ -11,7 +11,39 @@
         </div>
     </div>
     <mat-slider min="0" max="1" step="0.1" value="0.5" aria-label="volume" (change)="setNewVolume($event)"></mat-slider>
-    <button class="radio-btn" (click)="toggleQueue()">Queue</button>
+
+    <div class="queue-wrapper">
+        <button class="queue-btn" 
+            (click)="toggleQueue()" 
+            (drop)="queueButtonDrop($event)" 
+            (dragover)="queueButtonDragover($event)"
+            (dragenter)="queueButtonDragenter($event)"
+            (dragleave)="queueButtonDragleave($event)">
+                Queue
+        </button>
+        <div *ngIf="queueDragAndDropHovered || queueButtonHovered"
+            class="queue-drag-and-drop-wrapper"
+            (dragenter)="firstLastDragenter($event)"
+            (dragleave)="firstLastDragleave($event)">
+            <div 
+                [ngClass]="{'queue-drag-and-drop':!queueDragAndDropFrontHovered,'queue-drag-and-drop-active':queueDragAndDropFrontHovered}"
+                (drop)="firstLastDrop($event, 'front')"
+                (dragover)="firstLastDragover($event)"
+                (dragenter)="firstLastInnerDragenter($event, 'front')"
+                (dragleave)="firstLastInnerDragleave($event, 'front')">
+                Front
+            </div>
+            <div 
+            [ngClass]="{'queue-drag-and-drop':!queueDragAndDropbackHovered,'queue-drag-and-drop-active':queueDragAndDropbackHovered}"
+                (drop)="firstLastDrop($event, 'back')"
+                (dragover)="firstLastDragover($event)"
+                (dragenter)="firstLastInnerDragenter($event, 'back')"
+                (dragleave)="firstLastInnerDragleave($event, 'back')">
+                Back
+            </div>
+        </div>
+    </div>
+    
 </div>
 <dialog #QueueDialog class="queue-dialog">
     <div class="queue-menu">

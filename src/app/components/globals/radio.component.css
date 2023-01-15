@@ -33,6 +33,18 @@
     border-radius: 5px;
 }
 
+.queue-btn{
+    margin: 4px;
+    width: 100%;
+    height: 40px;
+    font-family: 'Courier New', Courier, monospace;
+    font-style: bold;
+    background-color: rgb(214, 167, 47);
+    box-shadow: black;
+    border-color: black;
+    border-radius: 5px;
+}
+
 .thin-radio-btn{
     margin: 4px;
     width: 5%;
@@ -53,6 +65,45 @@
 .radio-btn:hover{
     background-color: rgb(221, 188, 103);
     cursor: pointer;
+}
+
+.queue-btn:hover{
+    background-color: rgb(221, 188, 103);
+    cursor: pointer;
+}
+
+.queue-wrapper{
+    width: 10%;
+}
+
+.queue-drag-and-drop-wrapper{
+    margin: 4px;
+    width: 100%;
+    height: 40px;
+    font-family: 'Courier New', Courier, monospace;
+    border-color: black;
+    display: flex;
+    margin-top: -4px;
+    text-align: center;
+    box-sizing: border-box;
+    padding: 1px 6px;
+    border-width: 2px;
+    border-style: outset;
+    background-color: rgb(214, 167, 47);
+}
+
+.queue-drag-and-drop{
+    width:49%;
+    height:35px;
+    line-height: 35px;
+    background-color: rgb(223 208 179);
+}
+
+.queue-drag-and-drop-active{
+    width:49%;
+    height:35px;
+    line-height: 35px;
+    background-color: rgb(144 223 210);
 }
 
 .song-info-wraper{

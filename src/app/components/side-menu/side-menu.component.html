@@ -1,7 +1,17 @@
 <div class="list-wrapper">
     <ul class="list">
         <ng-container *ngFor="let playlist of playlists">
-            <li class="list-item" (click)="playlistClicked(playlist)" [ngClass]="{'current-list-item': playlist.id == currentPlaylist.id}">
+            <li
+                class="list-item"
+                (click)="playlistClicked(playlist)"
+                [ngClass]="{
+                    'current-list-item': ((!playlist.canBeHovered || !playlist.isHovered) && playlist.id == currentPlaylist.id),
+                    'hover-list-item': (playlist.canBeHovered && playlist.isHovered)
+                }"
+                (drop)="queueButtonDrop($event, playlist)" 
+                (dragover)="queueButtonDragover($event)"
+                (dragenter)="queueButtonDragenter($event, playlist)"
+                (dragleave)="queueButtonDragleave($event, playlist)">
                 {{playlist.name}}
             </li>
         </ng-container>

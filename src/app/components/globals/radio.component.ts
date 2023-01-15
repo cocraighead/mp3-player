@@ -11,6 +11,11 @@ import { song, SongQueue } from '../../types/types';
 export class RadioComponent implements OnInit {
   @ViewChild('QueueDialog') queueDialog: ElementRef;
   currentSong?:song
+  queueButtonHovered:boolean = false;
+  queueDragAndDropHovered:boolean = false;
+  queueDragAndDropFrontHovered:boolean = false;
+  queueDragAndDropbackHovered:boolean = false;
+
 
   constructor(public player:PlayerService) { }
 
@@ -66,5 +71,63 @@ export class RadioComponent implements OnInit {
 
   toggleLoop(){
     this.player.toggleLoop()
+  }
+
+  queueButtonDrop($event){
+    this.queueButtonHovered = false;
+    this.queueDragAndDropHovered = false;
+  }
+
+  queueButtonDragover($event){
+    return false
+  }
+
+  queueButtonDragenter($event){
+    this.queueButtonHovered = true;
+  }
+
+  queueButtonDragleave($event){
+    this.queueButtonHovered = false;
+  }
+
+  firstLastDrop($event, dropAreaId){
+    this.queueButtonHovered = false;
+    this.queueDragAndDropHovered = false;
+    // get song object from drag and drop // may need to add data to drag event
+    var song:song = JSON.parse($event.dataTransfer.getData("song"));
+    // add to front or back of the queue //based on param
+    if(dropAreaId === 'front'){
+      this.player.getQueue().addNext(song)
+    }else{
+      this.player.getQueue().add(song)
+    }
+  }
+
+  firstLastDragover($event){
+    return false
+  }
+
+  firstLastDragenter($event){
+    this.queueDragAndDropHovered = true
+  }
+
+  firstLastDragleave($event){
+    this.queueDragAndDropHovered = false
+  }
+
+  firstLastInnerDragenter($event, dropAreaId){
+    if(dropAreaId === 'front'){
+      this.queueDragAndDropFrontHovered = true;
+    }else{
+      this.queueDragAndDropbackHovered = true;
+    }
+  }
+
+  firstLastInnerDragleave($event, dropAreaId){
+    if(dropAreaId === 'front'){
+      this.queueDragAndDropFrontHovered = false;
+    }else{
+      this.queueDragAndDropbackHovered = false;
+    }
   }
 }

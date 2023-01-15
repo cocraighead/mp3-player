@@ -103,4 +103,9 @@ export class SongListComponent implements OnInit,AfterViewInit, OnChanges {
     this.player.getQueue().add(song)
   }
 
+  songDragStart($event, song:song) {
+    var songString = JSON.stringify(song);
+    $event.dataTransfer.setData("song", songString);
+  }
+
 }

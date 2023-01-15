@@ -3,9 +3,17 @@
     <tr class="header-row">
       <th class="table-headers" *ngFor="let col of displayedColumns"><span (click)="sortColumnClicked(col)" class="header-words"  [ngClass]="{'header-words-focused': col==sortCol}">{{col}}</span></th>
     </tr>
-    <tr class="regular-row" [ngClass]="songIndex%2===0? 'even-row' : 'odd-row'" *ngFor="let song of songs; let songIndex = index" 
-      (dblclick)="songClicked(song)" draggable="true" cdkDrag>
-      <td><button class="add-to-queue-btn" (click)="addClicked(song)">+</button></td>
+    <tr
+      class="regular-row"
+      [ngClass]="{
+        'active-row': (player.currentSong && player.currentSong?.id===song.id),
+        'even-row': (player.currentSong?.id !== song.id && songIndex%2===0),
+        'odd-row': (player.currentSong?.id !== song.id && songIndex%2!==0)}"
+      *ngFor="let song of songs; let songIndex = index" 
+      (dblclick)="songClicked(song)" (dragstart)="songDragStart($event, song)" draggable="true">
+      <td>
+        <button class="add-to-queue-btn" (click)="addClicked(song)">+</button>
+      </td>
       <td>{{song.id}}</td>
       <td>{{song.name}}</td>
       <td>{{song.artist}}</td>

@@ -20,14 +20,16 @@ export class song {
 export class playlist {
   id:string;
   name:string;
-  songs:song[]
+  isHovered:boolean;
+  canBeHovered:boolean
+  songs:song[];
 
 
   constructor(_id: string,_name: string,_songs: song[]) {
       this.id = _id;
       this.name = _name;
       this.songs = _songs;
-    }
+  }
 };
 
 export class SongQueue{

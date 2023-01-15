@@ -114,6 +114,23 @@ function getNewId(fullDownloadFolderPath){
     return Number(ids[ids.length-1]) + 1
 }
 
+app.get('/addsongtoplaylist', (req, res) => {
+    console.log('addsongtoplaylist hit');
+    res.set('Access-Control-Allow-Origin', '*');
+
+    var params = req.query
+    console.log(params);
+    var playlistId = params.playlistid
+    var songId = params.songid
+
+    var playlist = json.playlists[playlistId]
+    if(playlist){
+        playlist.songs.push(songId)
+        fs.writeFileSync('./db/playlists.json' , JSON.stringify({playlists:json.playlists}))
+    }
+    res.send({id:playlistId});
+})
+
 app.get('/newsong', async (req, res) => {
     console.log('post song hit');
     res.set('Access-Control-Allow-Origin', '*');

@@ -31,6 +31,10 @@
   cursor: pointer;
 }
 
+.active-row{
+  background-color: rgb(144 223 210);
+}
+
 .even-row{
   background-color: white;
 }
