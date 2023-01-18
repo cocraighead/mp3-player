@@ -2,6 +2,7 @@ import {AfterViewInit, Component, ViewChild, Input, OnInit, OnChanges,ElementRef
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { PlayerService } from '../../services/player.service';
 import { MediatorService } from 'src/app/services/mediator.service';
+import { RefreshService } from 'src/app/services/refresh-service';
 
 import { song } from '../../types/types';
 
@@ -23,7 +24,7 @@ export class SongListComponent implements OnInit,AfterViewInit, OnChanges {
     songAlbum: new FormControl('', Validators.required),
   });
 
-  constructor( private player: PlayerService, private mediator: MediatorService ) {}
+  constructor( private player: PlayerService, private mediator: MediatorService, private refreshService: RefreshService ) {}
 
   ngOnInit() {
   }
@@ -134,6 +135,7 @@ export class SongListComponent implements OnInit,AfterViewInit, OnChanges {
       this.updateSongForm.get('songArtist').value,
       this.updateSongForm.get('songAlbum').value
     ).subscribe((resp)=>{
+      this.refreshService.triggerLibraryRefresh()
       this.toggleSongInfo(this.songInfoSong)
     })
   }

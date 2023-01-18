@@ -2,9 +2,9 @@
     <img class="logo" src="assets/images/shiplogo.png" (click)="addSongClicked()">
     <app-radio></app-radio>
 </div>
-<div class="content-wrapper">
+<div *ngIf="!dataLoading" class="content-wrapper">
     <div class="side-menu-wrapper">
-        <app-side-menu [playlists]="playlists" (playlistEvent)="switchPlaylist($event)"></app-side-menu>
+        <app-side-menu [playlists]="playlists" [currentPlaylist]="currentPlaylist" (playlistEvent)="switchPlaylist($event)"></app-side-menu>
     </div>
     <div class="song-list-wrapper">
         <ng-container *ngIf="centerViewType === 0">

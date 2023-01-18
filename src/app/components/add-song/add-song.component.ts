@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MediatorService } from '../../services/mediator.service';
+import { RefreshService } from 'src/app/services/refresh-service';
 
 @Component({
   selector: 'app-add-song',
@@ -10,7 +11,7 @@ import { MediatorService } from '../../services/mediator.service';
 })
 export class AddSongComponent implements OnInit {
 
-  constructor(private mediator: MediatorService, private router: Router) { }
+  constructor(private mediator: MediatorService, private router: Router, private refreshService: RefreshService) { }
 
   loading:boolean = false
 
@@ -35,8 +36,8 @@ export class AddSongComponent implements OnInit {
         this.newSongForm.get('album').value
       ).subscribe((r)=>{
         this.clearForm()
+        this.refreshService.triggerLibraryRefresh()
         self.loading = false
-        this.clearForm()
         }
       )
     }

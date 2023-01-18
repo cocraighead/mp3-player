@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MediatorService } from '../../services/mediator.service';
+import { RefreshService } from 'src/app/services/refresh-service';
 
 import * as _ from 'lodash';
 
@@ -25,23 +26,35 @@ import { song, playlist } from '../../types/types';
 })
 export class LibraryComponent implements OnInit {
 
-  constructor(private mediator: MediatorService, private router: Router) { }
+  constructor(private mediator: MediatorService, private router: Router, private refreshService: RefreshService) { }
 
-  dataLoading = false
+  dataLoading = true
   songs:song[] = []
   currentSonglist:song[] = []
   playlists:playlist[] = []
+  currentPlaylist:playlist
   centerViewType = 0 // 0-songs,1-album,2-artists
 
   
   ngOnInit(): void {
+    this.refreshService.self$.subscribe((x) => {
+      this.refresh(x)
+    });
+  }
+
+  refresh(x:any){
+    this.currentSonglist = []
     this.dataLoading = true
-    this.mediator.getDB().subscribe((data:any)=>{
-      this.setUpSongs(data.library)
-      this.setUpPlayLists(data.playlists)
-      this.currentSonglist = this.songs
+    this.mediator.refreshDB().subscribe((resp:any)=>{
+      this.mediator.getDB().subscribe((data:any)=>{
+        this.songs = []
+        this.setUpSongs(data.library)
+        this.playlists = []
+        this.setUpPlayLists(data.playlists)
+        this.currentSonglist = this.currentPlaylist.songs
+        this.dataLoading = false
+      })
     })
-  
   }
 
   setUpSongs(libObj:any){
@@ -97,6 +110,20 @@ export class LibraryComponent implements OnInit {
         isHovered: false
       })
     })
+    if(!this.currentPlaylist){
+      this.currentPlaylist = this.playlists[0]
+    }else{
+      var foundFlag = false
+      for(var i=0;i<this.playlists.length;i++){
+        if(this.currentPlaylist.id === this.playlists[i].id){
+          this.currentPlaylist = this.playlists[i]
+          foundFlag = true
+        }
+      }
+      if(!foundFlag){
+        this.currentPlaylist = this.playlists[0]
+      }
+    }
   }
 
   switchPlaylist(playList:playlist){
@@ -107,6 +134,7 @@ export class LibraryComponent implements OnInit {
     }else{
       this.centerViewType = 0
     }
+    this.currentPlaylist = playList
     this.currentSonglist = playList.songs
   }
 

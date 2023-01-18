@@ -10,15 +10,15 @@ import { playlist, song } from '../../types/types';
 })
 export class SideMenuComponent implements OnInit,AfterViewInit, OnChanges {
   @Input() playlists:playlist[]
-  @Output() playlistEvent = new EventEmitter<string>();
-  currentPlaylist:playlist|any = {id:'-1'}
+  @Input() currentPlaylist:playlist
+  @Output() playlistEvent = new EventEmitter<playlist>();
 
   constructor(private mediator: MediatorService) { }
 
   ngOnInit(): void {
-    if(this.playlists.length){
-      this.currentPlaylist = this.playlists[0]
-    }
+    // if(this.playlists.length){
+    //   this.currentPlaylist = this.playlists[0]
+    // }
   }
 
   ngAfterViewInit() {
@@ -26,14 +26,14 @@ export class SideMenuComponent implements OnInit,AfterViewInit, OnChanges {
   }
 
   ngOnChanges(changes: any){
-    if(this.playlists.length){
-      this.currentPlaylist = this.playlists[0]
-    }
+    // if(this.playlists.length){
+    //   this.currentPlaylist = this.playlists[0]
+    // }
   }
 
   playlistClicked(playlist:playlist){
-    this.currentPlaylist = playlist
-    this.playlistEvent.emit(this.currentPlaylist);
+    // this.currentPlaylist = playlist
+    this.playlistEvent.emit(playlist);
   }
 
   hasSong(playlistP:playlist, song:song){

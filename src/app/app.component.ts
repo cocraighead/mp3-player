@@ -13,7 +13,6 @@ export class AppComponent {
   constructor(private mediator: MediatorService) { }
 
   ngOnInit(): void {
-    this.mediator.refreshDB().subscribe(r=>{})
   }
 
 }
