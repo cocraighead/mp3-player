@@ -1,0 +1,52 @@
+.artist-list-wrapper{
+  height: 100%;
+  overflow:scroll;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: flex-start;
+  background-color: white;
+}
+
+.artist-list-card{
+  margin: 16px;
+}
+
+.artist-list-card:hover{
+  cursor: pointer;
+}
+
+
+.artist-list-img{
+  width:150px;
+  height: 150px;
+}
+
+.artist-list-name{
+  text-align: center;
+}
+
+.artist-info-dialog{
+  overflow: scroll;
+  height:60%;
+  z-index: 998;
+  padding-top: 6px;
+  margin-bottom: 20px;
+  min-width: 40%;
+}
+
+.artist-info-dialog-menu{
+  display:flex;
+  flex-direction: row;
+  justify-content: end;
+  align-items: start;
+}
+
+.artist-info-dialog-content{
+
+}
+
+.artist-info-dialog-title-1{
+  font-weight: 600;
+}

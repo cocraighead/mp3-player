@@ -1,9 +1,7 @@
-import {AfterViewInit, Component, ViewChild, Input, OnInit, OnChanges,SimpleChanges } from '@angular/core';
+import {AfterViewInit, Component, ViewChild, Input, OnInit, OnChanges,ElementRef } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { PlayerService } from '../../services/player.service';
-import {LiveAnnouncer} from '@angular/cdk/a11y';
-import {MatSort, Sort} from '@angular/material/sort';
-import {MatTableDataSource} from '@angular/material/table';
-import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
+import { MediatorService } from 'src/app/services/mediator.service';
 
 import { song } from '../../types/types';
 
@@ -17,8 +15,15 @@ export class SongListComponent implements OnInit,AfterViewInit, OnChanges {
   sortCol = 'id'
   sortDirection = true
   @Input() songs:song[]
+  @ViewChild('SongInfoDialog') songInfoDialog: ElementRef;
+  songInfoSong:song
+  updateSongForm = new FormGroup({
+    songName: new FormControl('', Validators.required),
+    songArtist: new FormControl('', Validators.required),
+    songAlbum: new FormControl('', Validators.required),
+  });
 
-  constructor( private player: PlayerService ) {}
+  constructor( private player: PlayerService, private mediator: MediatorService ) {}
 
   ngOnInit() {
   }
@@ -99,13 +104,40 @@ export class SongListComponent implements OnInit,AfterViewInit, OnChanges {
     }
   }
 
-  addClicked(song:song) {
-    this.player.getQueue().add(song)
+  
+  toggleSongInfo(passedSong:song){
+    if(!this.songInfoDialog.nativeElement.open){
+      this.songInfoSong = passedSong
+      this.fillInSongInfoDialogForm(passedSong)
+      this.songInfoDialog.nativeElement.show()
+    }else{
+      this.songInfoDialog.nativeElement.close()
+      this.songInfoSong = undefined
+    }
   }
 
   songDragStart($event, song:song) {
     var songString = JSON.stringify(song);
     $event.dataTransfer.setData("song", songString);
   }
+
+  fillInSongInfoDialogForm(song:song){
+    this.updateSongForm.patchValue({songName:song.name})
+    this.updateSongForm.patchValue({songArtist:song.artist})
+    this.updateSongForm.patchValue({songAlbum:song.album})
+  }
+
+  updateSong(passedSong:song){
+    this.mediator.updateSong(
+      passedSong,
+      this.updateSongForm.get('songName').value,
+      this.updateSongForm.get('songArtist').value,
+      this.updateSongForm.get('songAlbum').value
+    ).subscribe((resp)=>{
+      this.toggleSongInfo(this.songInfoSong)
+    })
+  }
+
+
 
 }

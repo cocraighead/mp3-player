@@ -31,6 +31,7 @@ export class LibraryComponent implements OnInit {
   songs:song[] = []
   currentSonglist:song[] = []
   playlists:playlist[] = []
+  centerViewType = 0 // 0-songs,1-album,2-artists
 
   
   ngOnInit(): void {
@@ -71,6 +72,20 @@ export class LibraryComponent implements OnInit {
       canBeHovered: false,
       isHovered: false
     })
+    this.playlists.push({
+      id:'-2',
+      name: 'Artists',
+      songs: this.songs,
+      canBeHovered: false,
+      isHovered: false
+    })
+    this.playlists.push({
+      id:'-3',
+      name: 'Albums',
+      songs: this.songs,
+      canBeHovered: false,
+      isHovered: false
+    })
     keys.forEach((plId) => {
       this.playlists.push({
         id: plId,
@@ -85,6 +100,13 @@ export class LibraryComponent implements OnInit {
   }
 
   switchPlaylist(playList:playlist){
+    if(playList.id === '-2'){
+      this.centerViewType = 2
+    }else if(playList.id === '-3'){
+      this.centerViewType = 1
+    }else{
+      this.centerViewType = 0
+    }
     this.currentSonglist = playList.songs
   }
 

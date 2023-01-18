@@ -1,0 +1,20 @@
+<dialog #AlbumInfoDialog class="album-info-dialog">
+  <div class="album-info-dialog-menu">
+    <button (click)="toggleAlbumInfo(albumInfoAlbum)">X</button>
+  </div>
+  <div class="album-info-dialog-content">
+    <div class="album-info-dialog-title-1">{{albumInfoAlbum?.name}}</div>
+    <div class="album-info-dialog-title-2">{{albumInfoAlbum?.songs[0].artist}}</div>
+    <app-song-list [songs]="albumInfoAlbum?.songs"></app-song-list>
+  </div>
+</dialog>
+
+<div class="album-list-wrapper">
+  <ng-container *ngFor="let album of albums">
+    <div class="album-list-card" (click)="toggleAlbumInfo(album)">
+      <img class="album-list-img" src="{{album.imgPath}}" onerror="this.onerror=null; this.src='assets/albums/album-default.jpg'" draggable="false">
+      <div class="album-list-name">{{album.name}}</div>
+    </div>
+  </ng-container>
+</div>
+

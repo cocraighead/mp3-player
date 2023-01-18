@@ -31,6 +31,13 @@ export class MediatorService {
     return this.http.get(this.serverURL+'/newsong'+params)
   }
 
+  updateSong(song:song, newName:string, newArtist:string, newAlbum:string){
+    var oldFFullName = `${song.id},${song.artist},${song.album},${song.name}`
+    var newFullName = `${song.id},${newArtist},${newAlbum},${newName}`
+    var params = `?newfullname=${newFullName}&oldfullname=${oldFFullName}`
+    return this.http.get(this.serverURL+'/updatesong'+params)
+  }
+
   addSongToPlaylist(song:song, playlist:playlist){
     var params = `?songid=${song.id}&playlistid=${playlist.id}`
     return this.http.get(this.serverURL+'/addsongtoplaylist'+params)

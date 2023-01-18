@@ -7,6 +7,14 @@
         <app-side-menu [playlists]="playlists" (playlistEvent)="switchPlaylist($event)"></app-side-menu>
     </div>
     <div class="song-list-wrapper">
-        <app-song-list [songs]="currentSonglist"></app-song-list>
+        <ng-container *ngIf="centerViewType === 0">
+            <app-song-list [songs]="currentSonglist"></app-song-list>
+        </ng-container>
+        <ng-container *ngIf="centerViewType === 1">
+            <app-album-list [songs]="currentSonglist"></app-album-list>
+        </ng-container>
+        <ng-container *ngIf="centerViewType === 2">
+            <app-artist-list [songs]="currentSonglist"></app-artist-list>
+        </ng-container>
     </div>
 </div>

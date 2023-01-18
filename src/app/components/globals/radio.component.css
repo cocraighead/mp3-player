@@ -12,10 +12,10 @@
     width: calc(95vw - 150px);
     align-items: center;
     justify-content: center;
-    background-color: lightgrey;
+    background-color: #ededed;
     border-width: thin;
     border-style: solid;
-    border-color: black;
+    border-color: #cbcbcb;
     padding: 10px;
     margin-top: 18px;
     margin-bottom: 5px;
@@ -133,7 +133,7 @@
 .queue-dialog{
     overflow: scroll;
     height:60%;
-    z-index: 1000;
+    z-index: 999;
     padding-top: 0px;
     margin-bottom: 20px;
     min-width: 40%;

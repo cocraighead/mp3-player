@@ -1,0 +1,19 @@
+<dialog #ArtistInfoDialog class="artist-info-dialog">
+  <div class="artist-info-dialog-menu">
+    <button (click)="toggleArtistInfo(artistInfoArtist)">X</button>
+  </div>
+  <div class="artist-info-dialog-content">
+    <div class="artist-info-dialog-title-1">{{artistInfoArtist?.name}}</div>
+    <app-song-list [songs]="artistInfoArtist?.songs"></app-song-list>
+  </div>
+</dialog>
+
+<div class="artist-list-wrapper">
+  <ng-container *ngFor="let artist of artists">
+    <div class="artist-list-card" (click)="toggleArtistInfo(artist)">
+      <img class="artist-list-img" src="{{artist.imgPath}}" onerror="this.onerror=null; this.src='assets/artists/artist-default.jpg'" draggable="false">
+      <div class="artist-list-name">{{artist.name}}</div>
+    </div>
+  </ng-container>
+</div>
+

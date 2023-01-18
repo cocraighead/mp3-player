@@ -10,6 +10,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LibraryComponent } from './components/library/library.component';
 import { SongListComponent } from './components/song-list/song-list.component';
+import { AlbumListComponent } from './components/album-list/album-list.component';
+import { ArtistListComponent } from './components/artist-list/artist-list.component';
 import { RadioComponent } from './components/globals/radio.component';
 import {AddSongComponent} from './components/add-song/add-song.component'
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -23,7 +25,9 @@ import { SideMenuComponent } from './components/side-menu/side-menu.component';
     SongListComponent,
     RadioComponent,
     SideMenuComponent,
-    AddSongComponent
+    AddSongComponent,
+    AlbumListComponent,
+    ArtistListComponent
   ],
   imports: [
     BrowserModule,

@@ -49,6 +49,7 @@ export class SideMenuComponent implements OnInit,AfterViewInit, OnChanges {
     // get song object from drag and drop // may need to add data to drag event
     var song:song = JSON.parse($event.dataTransfer.getData("song"));
     if(this.hasSong(playlistH, song)){
+      alert('Song is already in playlist')
       return
     }
     // mediator add song to queue

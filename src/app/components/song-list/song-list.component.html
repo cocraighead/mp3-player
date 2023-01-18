@@ -3,6 +3,20 @@
     <tr class="header-row">
       <th class="table-headers" *ngFor="let col of displayedColumns"><span (click)="sortColumnClicked(col)" class="header-words"  [ngClass]="{'header-words-focused': col==sortCol}">{{col}}</span></th>
     </tr>
+    <dialog #SongInfoDialog class="song-info-dialog">
+      <div class="song-info-dialog-menu">
+        <button (click)="toggleSongInfo(songInfoSong)">X</button>
+      </div>
+      <form class="song-info-dialog-input-wrapper" [formGroup]="updateSongForm">
+        <label for="song-name">Name</label>
+        <input type="text" name="song-name" formControlName="songName">
+        <label for="song-album">Album</label>
+        <input type="text" name="song-album" formControlName="songAlbum">
+        <label for="song-artist">Artist</label>
+        <input type="text" name="song-artist" formControlName="songArtist">
+        <button type="button" class="song-info-dialog-update-btn" (click)="updateSong(songInfoSong)" [disabled]="!updateSongForm.valid">Update</button>
+      </form>
+    </dialog>
     <tr
       class="regular-row"
       [ngClass]="{
@@ -12,7 +26,7 @@
       *ngFor="let song of songs; let songIndex = index" 
       (dblclick)="songClicked(song)" (dragstart)="songDragStart($event, song)" draggable="true">
       <td>
-        <button class="add-to-queue-btn" (click)="addClicked(song)">+</button>
+        <button class="add-to-queue-btn" (click)="toggleSongInfo(song)">i</button>
       </td>
       <td>{{song.id}}</td>
       <td>{{song.name}}</td>

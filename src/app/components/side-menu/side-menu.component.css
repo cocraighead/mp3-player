@@ -1,8 +1,8 @@
 .list-wrapper{
-    background-color: rgb(211,211,211);
+    background-color: #ededed;
     border:thin;
     border-style: solid;
-    border-color: black;
+    border-color: #cbcbcb;
 }
 
 .list{
@@ -12,7 +12,7 @@
 
 .list-item{
     background-color: white;
-    border-color: lightgrey;
+    border-color: #ededed;
     border-style: solid;
     border-width: thin;
     user-select: none;

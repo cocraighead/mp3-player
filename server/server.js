@@ -176,6 +176,21 @@ app.get('/newsong', async (req, res) => {
     res.send({id:newId});
 })
 
+app.get('/updatesong', async (req, res) => {
+    console.log('put song hit');
+    res.set('Access-Control-Allow-Origin', '*');
+    var fullDownloadFolderPath = 'C:/Users/Zed God/Documents/Code Docs/Music player/mp3-player/server/music/';
+
+    var params = req.query
+    console.log(params);
+    var newPath =  fullDownloadFolderPath + params.newfullname + '.mp3';
+    var oldPath =  fullDownloadFolderPath + params.oldfullname + '.mp3';
+
+    fs.renameSync(oldPath, newPath)
+    
+    res.send({id:params.id});
+})
+
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
 })
