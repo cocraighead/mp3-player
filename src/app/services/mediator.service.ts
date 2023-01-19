@@ -32,9 +32,9 @@ export class MediatorService {
   }
 
   updateSong(song:song, newName:string, newArtist:string, newAlbum:string){
-    var oldFFullName = `${song.id},${song.artist},${song.album},${song.name}`
+    var songId = song.id
     var newFullName = `${song.id},${newArtist},${newAlbum},${newName}`
-    var params = `?newfullname=${newFullName}&oldfullname=${oldFFullName}`
+    var params = `?newfullname=${newFullName}&id=${songId}`
     return this.http.get(this.serverURL+'/updatesong'+params)
   }
 

@@ -66,6 +66,10 @@ export class PlayerService {
     if(this.state!==States.ST) this.mainPlayer.volume = value
   }
 
+  setTime(value:number){
+    this.mainPlayer.currentTime = value
+  }
+
   playNew(newSong:song, songList:song[]){
     this.startPlaying(newSong)
     if(this.songQueue.empty()){

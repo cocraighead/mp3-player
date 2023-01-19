@@ -9,6 +9,11 @@
             <p class="song-sub-info">{{currentSong?.artist}}</p>
             <p class="song-sub-info">{{currentSong?.album}}</p>
         </div>
+        <div *ngIf="currentSong" class="song-info-timer-wrapper">
+            <div>{{currentSongTime*1000 | date: 'mm:ss'}}</div>
+            <mat-slider class="timer-slider" min="0" max="{{currentSongLength}}" step="1" value="{{currentSongTime}}" (change)="timerChanged($event)"></mat-slider>
+            <div>{{currentSongLength*1000 | date: 'mm:ss'}}</div>
+        </div>
     </div>
     <mat-slider min="0" max="1" step="0.1" value="0.5" aria-label="volume" (change)="setNewVolume($event)"></mat-slider>
 

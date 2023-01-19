@@ -11,6 +11,7 @@
 
 .album-list-card{
   margin: 16px;
+  width: 8%;
 }
 
 .album-list-card:hover{

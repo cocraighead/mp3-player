@@ -184,11 +184,23 @@ app.get('/updatesong', async (req, res) => {
     var params = req.query
     console.log(params);
     var newPath =  fullDownloadFolderPath + params.newfullname + '.mp3';
-    var oldPath =  fullDownloadFolderPath + params.oldfullname + '.mp3';
-
-    fs.renameSync(oldPath, newPath)
+    var id = params.id
+    var files = fs.readdirSync('./music');
+    var oldfullname = ''
+    for(var i=0;i<files.length;i++){
+        if(files[i].startsWith(id)){
+            oldfullname = files[i]
+        }
+    }
+    if(oldfullname){
+        var oldPath =  fullDownloadFolderPath + oldfullname;
+        fs.renameSync(oldPath, newPath)
+        res.send({id:params.id});
+    }else{
+        res.send({error:'no file'});
+    }
     
-    res.send({id:params.id});
+   
 })
 
 app.listen(port, () => {

@@ -11,6 +11,8 @@ import { song, SongQueue } from '../../types/types';
 export class RadioComponent implements OnInit {
   @ViewChild('QueueDialog') queueDialog: ElementRef;
   currentSong?:song
+  currentSongTime
+  currentSongLength
   queueButtonHovered:boolean = false;
   queueDragAndDropHovered:boolean = false;
   queueDragAndDropFrontHovered:boolean = false;
@@ -22,6 +24,12 @@ export class RadioComponent implements OnInit {
   ngOnInit(): void {
     this.player.self$.subscribe((x) => {
       this.setCurrentSong(x.currentSong)
+    });
+    this.player.mainPlayer.addEventListener("timeupdate", (e)=>{
+      this.currentSongTime = Math.round(e.srcElement.currentTime)
+    });
+    this.player.mainPlayer.addEventListener("durationchange", (e)=>{
+      this.currentSongLength = Math.round(e.srcElement.duration)
     });
   }
 
@@ -129,5 +137,9 @@ export class RadioComponent implements OnInit {
     }else{
       this.queueDragAndDropbackHovered = false;
     }
+  }
+
+  timerChanged($e){
+    this.player.setTime($e.value)
   }
 }

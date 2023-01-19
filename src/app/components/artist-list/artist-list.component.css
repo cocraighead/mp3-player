@@ -11,6 +11,7 @@
 
 .artist-list-card{
   margin: 16px;
+  width: 8%;
 }
 
 .artist-list-card:hover{

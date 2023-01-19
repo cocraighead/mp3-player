@@ -115,6 +115,7 @@
 
 .song-name{
     margin-bottom: 4px;
+    margin-top: 4px;
     font-size: large;
     font-weight: bold;
 }
@@ -123,9 +124,21 @@
     display:flex;
 }
 
+.song-info-timer-wrapper{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 10px;
+}
+
+.timer-slider{
+    min-width: 70% !important;
+}
+
 .song-sub-info{
     width: 50%;
     margin-top: 4px;
+    margin-bottom: 8px;
     font-size: medium;
     font-weight: lighter;
 }
