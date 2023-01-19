@@ -1,5 +1,5 @@
 .artist-list-wrapper{
-  height: 100%;
+  height: calc(100% - 40px);
   overflow:scroll;
   display: flex;
   flex-direction: row;
@@ -50,4 +50,13 @@
 
 .artist-info-dialog-title-1{
   font-weight: 600;
+}
+
+.search-wrapper{
+  margin-top: 6px;
+  margin-bottom: 12px;
+}
+
+.search-input{
+  width: 16%;
 }

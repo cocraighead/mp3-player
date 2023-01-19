@@ -1,3 +1,7 @@
+<div class="search-wrapper">
+  <input class="search-input" type="text" placeholder="search" (input)="searchChanged($event)">
+</div>
+
 <div class="table-wrapper">
   <table class="table-styling">
     <tr class="header-row">
@@ -23,7 +27,7 @@
         'active-row': (player.currentSong && player.currentSong?.id===song.id),
         'even-row': (player.currentSong?.id !== song.id && songIndex%2===0),
         'odd-row': (player.currentSong?.id !== song.id && songIndex%2!==0)}"
-      *ngFor="let song of songs; let songIndex = index" 
+      *ngFor="let song of filteredSongs; let songIndex = index" 
       (dblclick)="songClicked(song)" (dragstart)="songDragStart($event, song)" draggable="true">
       <td>
         <button class="add-to-queue-btn" (click)="toggleSongInfo(song)">i</button>

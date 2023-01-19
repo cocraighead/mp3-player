@@ -9,8 +9,12 @@
   </div>
 </dialog>
 
+<div class="search-wrapper">
+  <input class="search-input" type="text" placeholder="search" (input)="searchChanged($event)">
+</div>
+
 <div class="album-list-wrapper">
-  <ng-container *ngFor="let album of albums">
+  <ng-container *ngFor="let album of filteredAlbums">
     <div class="album-list-card" (click)="toggleAlbumInfo(album)">
       <img class="album-list-img" src="{{album.imgPath}}" onerror="this.onerror=null; this.src='assets/albums/album-default.jpg'" draggable="false">
       <div class="album-list-name">{{album.name}}</div>

@@ -11,6 +11,7 @@ export class ArtistListComponent implements OnInit,AfterViewInit, OnChanges {
   @Input() songs:song[]
   @ViewChild('ArtistInfoDialog') artistInfoDialog: ElementRef;
   artists:any
+  filteredArtists:any
   artistInfoArtist:any
 
   constructor( private player: PlayerService ) {}
@@ -45,6 +46,7 @@ export class ArtistListComponent implements OnInit,AfterViewInit, OnChanges {
         return 0
       }
     })
+    this.filteredArtists = this.artists.slice()
   }
     
 
@@ -63,6 +65,19 @@ export class ArtistListComponent implements OnInit,AfterViewInit, OnChanges {
     }else{
       this.artistInfoDialog.nativeElement.close()
       this.artistInfoArtist = undefined
+    }
+  }
+
+  searchChanged($event){
+    this.filterArtists($event.srcElement.value)
+  }
+
+  filterArtists(filterTerm){
+    this.filteredArtists = []
+    for(var i=0;i<this.artists.length;i++){
+      if(this.artists[i].name.toLowerCase().startsWith(filterTerm.toLowerCase())){
+        this.filteredArtists.push(this.artists[i])
+      }
     }
   }
 

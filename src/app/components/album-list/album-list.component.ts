@@ -11,6 +11,7 @@ export class AlbumListComponent implements OnInit,AfterViewInit, OnChanges {
   @Input() songs:song[]
   @ViewChild('AlbumInfoDialog') albumInfoDialog: ElementRef;
   albums:any
+  filteredAlbums:any
   albumInfoAlbum:any
 
   constructor( private player: PlayerService ) {}
@@ -45,6 +46,7 @@ export class AlbumListComponent implements OnInit,AfterViewInit, OnChanges {
         return 0
       }
     })
+    this.filteredAlbums = this.albums.slice()
   }
     
 
@@ -63,6 +65,19 @@ export class AlbumListComponent implements OnInit,AfterViewInit, OnChanges {
     }else{
       this.albumInfoDialog.nativeElement.close()
       this.albumInfoAlbum = undefined
+    }
+  }
+
+  searchChanged($event){
+    this.filterAlbums($event.srcElement.value)
+  }
+
+  filterAlbums(filterTerm){
+    this.filteredAlbums = []
+    for(var i=0;i<this.albums.length;i++){
+      if(this.albums[i].name.toLowerCase().startsWith(filterTerm.toLowerCase())){
+        this.filteredAlbums.push(this.albums[i])
+      }
     }
   }
 

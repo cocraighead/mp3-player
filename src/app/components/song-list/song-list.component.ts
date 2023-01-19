@@ -16,6 +16,7 @@ export class SongListComponent implements OnInit,AfterViewInit, OnChanges {
   sortCol = 'id'
   sortDirection = true
   @Input() songs:song[]
+  filteredSongs:song[]
   @ViewChild('SongInfoDialog') songInfoDialog: ElementRef;
   songInfoSong:song
   updateSongForm = new FormGroup({
@@ -27,6 +28,11 @@ export class SongListComponent implements OnInit,AfterViewInit, OnChanges {
   constructor( private player: PlayerService, private mediator: MediatorService, private refreshService: RefreshService ) {}
 
   ngOnInit() {
+    if(this.songs){
+      this.filteredSongs = this.songs.slice()
+    }else{
+      this.filteredSongs = []
+    }
   }
 
   ngAfterViewInit() {
@@ -34,18 +40,23 @@ export class SongListComponent implements OnInit,AfterViewInit, OnChanges {
   }
 
   ngOnChanges(changes: any){
+    if(this.songs){
+      this.filteredSongs = this.songs.slice()
+    }else{
+      this.filteredSongs = []
+    }
   }
 
   songClicked(songClicked:song){
     var songListIndex = -1
-    for(var i=0;i<this.songs.length;i++){
-      if(this.songs[i].id === songClicked.id){
+    for(var i=0;i<this.filteredSongs.length;i++){
+      if(this.filteredSongs[i].id === songClicked.id){
         songListIndex = i
       }
     }
     if(songListIndex !== -1){
-      var afterSongSongList = this.songs.slice(songListIndex+1)
-      var beforeSongSonglist = this.songs.slice(0,songListIndex)
+      var afterSongSongList = this.filteredSongs.slice(songListIndex+1)
+      var beforeSongSonglist = this.filteredSongs.slice(0,songListIndex)
       var passSongList = afterSongSongList.concat(beforeSongSonglist)
       this.player.playNew(songClicked, passSongList)
     }
@@ -65,6 +76,24 @@ export class SongListComponent implements OnInit,AfterViewInit, OnChanges {
   sortSongs(col, sortDirection){
     this.sortCol = col
     if(sortDirection){
+      this.filteredSongs.sort((a:song, b:song)=>{
+        let na:any = JSON.parse(JSON.stringify(a))
+        let nb:any = JSON.parse(JSON.stringify(b))
+        if(this.sortCol === 'id'){
+          na.id = parseInt(a.id)
+          nb.id = parseInt(b.id)
+        }else{
+          na[this.sortCol] = a[this.sortCol].toLowerCase()
+          nb[this.sortCol] = b[this.sortCol].toLowerCase()
+        }
+        if(na[this.sortCol] < nb[this.sortCol]){
+          return -1
+        }else if(na[this.sortCol] > nb[this.sortCol]){
+          return 1
+        }else{
+          return 0
+        } 
+      })
       this.songs.sort((a:song, b:song)=>{
         let na:any = JSON.parse(JSON.stringify(a))
         let nb:any = JSON.parse(JSON.stringify(b))
@@ -84,6 +113,24 @@ export class SongListComponent implements OnInit,AfterViewInit, OnChanges {
         } 
       })
     }else{
+      this.filteredSongs.sort((a:song, b:song)=>{
+        let na:any = JSON.parse(JSON.stringify(a))
+        let nb:any = JSON.parse(JSON.stringify(b))
+        if(this.sortCol === 'id'){
+          na.id = parseInt(a.id)
+          nb.id = parseInt(b.id)
+        }else{
+          na[this.sortCol] = a[this.sortCol].toLowerCase()
+          nb[this.sortCol] = b[this.sortCol].toLowerCase()
+        }
+        if(na[this.sortCol] < nb[this.sortCol]){
+          return 1
+        }else if(na[this.sortCol] > nb[this.sortCol]){
+          return -1
+        }else{
+          return 0
+        } 
+      })
       this.songs.sort((a:song, b:song)=>{
         let na:any = JSON.parse(JSON.stringify(a))
         let nb:any = JSON.parse(JSON.stringify(b))
@@ -140,6 +187,17 @@ export class SongListComponent implements OnInit,AfterViewInit, OnChanges {
     })
   }
 
+  searchChanged($event){
+    this.filterSongs($event.srcElement.value)
+  }
 
+  filterSongs(filterTerm){
+    this.filteredSongs = []
+    for(var i=0;i<this.songs.length;i++){
+      if(this.songs[i].name.toLowerCase().startsWith(filterTerm.toLowerCase())){
+        this.filteredSongs.push(this.songs[i])
+      }
+    }
+  }
 
 }

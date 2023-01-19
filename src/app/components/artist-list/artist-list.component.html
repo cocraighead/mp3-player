@@ -8,8 +8,12 @@
   </div>
 </dialog>
 
+<div class="search-wrapper">
+  <input class="search-input" type="text" placeholder="search" (input)="searchChanged($event)">
+</div>
+
 <div class="artist-list-wrapper">
-  <ng-container *ngFor="let artist of artists">
+  <ng-container *ngFor="let artist of filteredArtists">
     <div class="artist-list-card" (click)="toggleArtistInfo(artist)">
       <img class="artist-list-img" src="{{artist.imgPath}}" onerror="this.onerror=null; this.src='assets/artists/artist-default.jpg'" draggable="false">
       <div class="artist-list-name">{{artist.name}}</div>

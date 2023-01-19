@@ -8,16 +8,15 @@ import * as _ from 'lodash';
 import { song, playlist } from '../../types/types';
 
 // TODO
-// Edit song - add a artist album name album image
-// song meta data - songs data like image ect displays
-// history - history to queue
-// playlists - to db
 // search
-// artists/albums view
-// refresh db 
-// add new songs from youtube using yt to mp3
-// different song list styles - medium table, large grid
-// copy itunes features - settings/custiomization for the user, drag and drop, left right click, 
+// delete songs
+// overhall backend to use post
+// front end backend error handle connection
+// Add artist and album cover - from internet or from computer
+// Make sure history feels correct / looping as well
+// add Edit delete playlists
+// copy itunes features - recently added, ect
+// idea to scrape itunes recently added and give option to add to mp3-player
 
 @Component({
   selector: 'app-library',
