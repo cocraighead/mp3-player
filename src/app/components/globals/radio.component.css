@@ -208,3 +208,12 @@
 .queue-close-button{
     height: 20px;
 }
+
+.queue-remove-song-button{
+    background-color: transparent;
+    border: none;
+}
+
+.queue-remove-song-button:hover{
+    cursor: pointer;
+}

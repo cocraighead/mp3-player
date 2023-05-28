@@ -63,7 +63,7 @@
         <li *ngFor="let song of player.getQueue().queue; let queueIndex = index" [ngClass]="queueIndex%2===0? 'even-row' : 'odd-row'">
             <div class="queue-song-flex">
                 <div class="queue-song-name">{{song.name}}</div>
-                <button (click)="removeFromQueue(queueIndex)">X</button>
+                <button class="queue-remove-song-button" (click)="removeFromQueue(queueIndex)">X</button>
             </div>
         </li>
     </ul>

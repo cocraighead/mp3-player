@@ -33,7 +33,7 @@ export class PlayerService {
   }
 
   startPlaying(song:song|undefined){
-    this.mainPlayer.src = 'http://localhost:3000/mp3/'+song?.id
+    this.mainPlayer.src = 'http://localhost:4200/api/mp3/'+song?.id
     this.currentSong = song
     this.mainPlayer.volume = this.currentVolume
     this.mainPlayer.play()

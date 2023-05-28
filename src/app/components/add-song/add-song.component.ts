@@ -34,12 +34,16 @@ export class AddSongComponent implements OnInit {
         this.newSongForm.get('name').value,
         this.newSongForm.get('artist').value,
         this.newSongForm.get('album').value
-      ).subscribe((r)=>{
-        this.clearForm()
-        this.refreshService.triggerLibraryRefresh()
-        self.loading = false
+      ).subscribe((r:any)=>{
+        if(r.error){
+          alert(r.error)
+          self.loading = false
+        }else{
+          this.clearForm()
+          this.refreshService.triggerLibraryRefresh()
+          self.loading = false
         }
-      )
+      })
     }
   }
 

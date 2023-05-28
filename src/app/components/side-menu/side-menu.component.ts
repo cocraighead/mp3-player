@@ -50,6 +50,7 @@ export class SideMenuComponent implements OnInit,AfterViewInit, OnChanges {
     var song:song = JSON.parse($event.dataTransfer.getData("song"));
     if(this.hasSong(playlistH, song)){
       alert('Song is already in playlist')
+      playlistH.isHovered = false
       return
     }
     // mediator add song to queue

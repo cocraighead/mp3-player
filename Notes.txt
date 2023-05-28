@@ -1,0 +1,8 @@
+Notes for getting direct data form yt
+-Network: Create POST https://jnn-pa.googleapis.com/$rpc/google.internal.waa.v1.Waa/Create
+-Look at calls stack for the request
+-Breakpoint oga - top of the stack at f.send(a, "POST", b);
+-Breakpoint pga - lower down on stack .then(function(h) {
+            -> return h.z8
+        })
+-Data flowin in is long string - try and find the type or conversion or useage of string

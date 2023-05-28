@@ -1,23 +1,26 @@
 const express = require('express')
 const { chromium } = require('playwright');
 const app = express()
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 const fs = require('fs');
 const port = 3000
 var json = {}
 
 
-app.get('/', (req, res) => {
-  res.send('mock api')
+app.get('/api/', (req, res) => {
+    console.log('GET: /api')
+    res.send('mock api')
 })
 
-app.get('/db', (req, res) => {
-    console.log('db hit')
-    res.set('Access-Control-Allow-Origin', '*');
+app.get('/api/db', (req, res) => {
+    console.log('GET: /api/db')
     res.send(json)
 })
 
-app.get('/refreshDb', (req, res) => {
-    res.set('Access-Control-Allow-Origin', '*');
+app.get('/api/refreshDb', (req, res) => {
+    console.log('GET: /api/refreshDb')
     var files = fs.readdirSync('./music');
     json = {'library': {}}
     
@@ -47,8 +50,9 @@ app.get('/refreshDb', (req, res) => {
     res.send({resp:true})
 })
 
-app.get('/song/:id', (req, res) => {
-    console.log('song hit')
+app.get('/api/song/:id', (req, res) => {
+    console.log('GET /api/song/:id')
+    console.log(req.params)
     let responseObj
     let songId = req.params.id
     let song = json.library[songId]
@@ -57,12 +61,13 @@ app.get('/song/:id', (req, res) => {
     }else{
         responseObj = {err:'Song Not Found'}
     }
-    res.set('Access-Control-Allow-Origin', '*');
+    
     res.send(responseObj)
 })
 
-app.get('/mp3/:id', (req, res) => {
-    console.log('mp3 hit')
+app.get('/api/mp3/:id', (req, res) => {
+    console.log('GET /api/mp3/:id')
+    console.log(req.params)
     let songObj
     let songId = req.params.id
     let song = json.library[songId]
@@ -71,7 +76,7 @@ app.get('/mp3/:id', (req, res) => {
     }else{
         songObj = {err:'Song Not Found'}
     }
-    res.set('Access-Control-Allow-Origin', '*');
+    
     res.sendFile(songObj.filePath,{root:'C:/Users/Zed God/Documents/Code Docs/Music player/mp3-player/server'});
 })
 
@@ -103,7 +108,6 @@ function getNewId(fullDownloadFolderPath){
         // a must be equal to b
         return 0;
     })
-    console.log(ids)
     var prev = -1
     for(var i=0;i<ids.length;i++){
         if(Number(ids[i])-1 !== prev){
@@ -114,14 +118,13 @@ function getNewId(fullDownloadFolderPath){
     return Number(ids[ids.length-1]) + 1
 }
 
-app.get('/addsongtoplaylist', (req, res) => {
-    console.log('addsongtoplaylist hit');
-    res.set('Access-Control-Allow-Origin', '*');
+app.put('/api/addsongtoplaylist', (req, res) => {
+    console.log('PUT /api/addsongtoplaylist')
+    console.log(req.body)
 
-    var params = req.query
-    console.log(params);
-    var playlistId = params.playlistid
-    var songId = params.songid
+    var body = req.body
+    var playlistId = body.playlistid
+    var songId = body.songid
 
     var playlist = json.playlists[playlistId]
     if(playlist){
@@ -131,76 +134,91 @@ app.get('/addsongtoplaylist', (req, res) => {
     res.send({id:playlistId});
 })
 
-app.get('/newsong', async (req, res) => {
-    console.log('post song hit');
-    res.set('Access-Control-Allow-Origin', '*');
-    var yttopm3url = 'https://tomp3.cc/en7';
-    var fullDownloadFolderPath = 'C:/Users/Zed God/Documents/Code Docs/Music player/mp3-player/server/music/';
+app.post('/api/newsong', async (req, res) => {
+    try{
+        throw 'endpoint down'
+        console.log('POST /api/newsong')
+        console.log(req.body)
+        
+        var yttopm3url = 'https://yt2mp3.info/?l=en';
+        var fullDownloadFolderPath = 'C:/Users/Zed God/Documents/Code Docs/Music player/mp3-player/server/music/';
 
-    var params = req.query
-    console.log(params);
-    var ytUrl = decodeURIComponent(params.ytlink);
-    console.log(ytUrl);
-    var newId = getNewId(fullDownloadFolderPath)
-    var newName = `${newId},${params.artist},${params.album},${params.name}.mp3`
+        var body = req.body
+        var ytUrl = decodeURIComponent(body.ytlink)
+        console.log(ytUrl)
+        var newId = getNewId(fullDownloadFolderPath)
+        var newName = `${newId},${body.artist},${body.album},${body.name}.mp3`
 
-    // Setup
-    const browser = await chromium.launch();
-    const context = await browser.newContext();
-    const page = await context.newPage();
+        // Setup
+        const browser = await chromium.launch();
+        const context = await browser.newContext();
+        const page = await context.newPage();
 
-    await page.goto(yttopm3url);
+        await page.goto(yttopm3url);
 
-    // Type into search box.
-    await page.type('input[type="search"]', ytUrl);
-    await page.keyboard.press('Enter')
+        // Type into search box.
+        await page.type('input[name="video"]', ytUrl);
+        var searchBtnSelector = 'button[type="submit"]'
+        if(searchBtnSelector){
+            await page.click(searchBtnSelector);
+        }else{
+            await page.keyboard.press('Enter')
+        }
+        
 
-    // convert
-    await page.waitForSelector('#btn-convert',{timeout:30000})
-    await page.click('#btn-convert');
+        // convert
+        // await page.waitForSelector('#btn-convert',{timeout:30000})
+        // await page.click('#btn-convert');
 
-    //download 
-    var dlbtn = await page.waitForSelector('#asuccess',{timeout:30000})
-    await delay(500);
-    const downloadPromise = page.waitForEvent('download');
-    await page.click('#asuccess');
-    const download = await downloadPromise;
-    // Wait for the download process to complete.
-    await download.path()
-    await download.saveAs(fullDownloadFolderPath+newName);
-   
-  
-    // Teardown
-    await context.close();
-    await browser.close();
-    res.send({id:newId});
+        //download 
+        var downloadSelector = '#mp3data a'
+        await page.screenshot({ path: 'logs/test.png' });
+        var dlbtn = await page.waitForSelector(downloadSelector ,{timeout:30000})
+        await delay(500);
+        const downloadPromise = page.waitForEvent('download');
+        await page.click(downloadSelector);
+        const download = await downloadPromise;
+        // Wait for the download process to complete.
+        await download.path()
+        await download.saveAs(fullDownloadFolderPath+newName);
+    
+    
+        // Teardown
+        await context.close();
+        await browser.close();
+        res.send({id:newId});
+    }catch(e){
+        console.log(e)
+        res.send({error:e});
+    }
 })
 
-app.get('/updatesong', async (req, res) => {
-    console.log('put song hit');
-    res.set('Access-Control-Allow-Origin', '*');
+app.put('/api/updatesong', async (req, res) => {
+    console.log('PUT /api/updatesong')
+    console.log(req.body)
+    
     var fullDownloadFolderPath = 'C:/Users/Zed God/Documents/Code Docs/Music player/mp3-player/server/music/';
 
-    var params = req.query
-    console.log(params);
-    var newPath =  fullDownloadFolderPath + params.newfullname + '.mp3';
-    var id = params.id
+    var body = req.body
+    var newPath = fullDownloadFolderPath + body.newfullname + '.mp3';
+    var id = body.id
     var files = fs.readdirSync('./music');
     var oldfullname = ''
     for(var i=0;i<files.length;i++){
-        if(files[i].startsWith(id)){
+        var fileIId = files[i].substring(0, files[i].indexOf(','))
+        if(Number(fileIId) === Number(id)){
             oldfullname = files[i]
         }
     }
+    console.log(oldfullname)
+    console.log(newPath)
     if(oldfullname){
-        var oldPath =  fullDownloadFolderPath + oldfullname;
+        var oldPath = fullDownloadFolderPath + oldfullname;
         fs.renameSync(oldPath, newPath)
-        res.send({id:params.id});
+        res.send({id:body.id});
     }else{
         res.send({error:'no file'});
-    }
-    
-   
+    } 
 })
 
 app.listen(port, () => {

@@ -8,10 +8,13 @@ import * as _ from 'lodash';
 import { song, playlist } from '../../types/types';
 
 // TODO
-// search
+// Fix update song - needs testing
+// newsong more error handle and debug - weakest spot
 // delete songs
 // overhall backend to use post
 // front end backend error handle connection
+// Drag to reorder queue
+// Song info has multiple tabs - hold delete and lyrics - playlists on - remove from playlists ect
 // Add artist and album cover - from internet or from computer
 // Make sure history feels correct / looping as well
 // add Edit delete playlists
