@@ -19,6 +19,8 @@ export class SongListComponent implements OnInit,AfterViewInit, OnChanges {
   filteredSongs:song[]
   @ViewChild('SongInfoDialog') songInfoDialog: ElementRef;
   songInfoSong:song
+  songInfoAlbumArtPath:string
+  songInfoArtisArtPath : string
   updateSongForm = new FormGroup({
     songName: new FormControl('', Validators.required),
     songArtist: new FormControl('', Validators.required),
@@ -156,6 +158,8 @@ export class SongListComponent implements OnInit,AfterViewInit, OnChanges {
   toggleSongInfo(passedSong:song){
     if(!this.songInfoDialog.nativeElement.open){
       this.songInfoSong = passedSong
+      this.songInfoAlbumArtPath =  this.getAlbumArtistPath(passedSong, true)
+      this.songInfoArtisArtPath =  this.getAlbumArtistPath(passedSong, false)
       this.fillInSongInfoDialogForm(passedSong)
       this.songInfoDialog.nativeElement.show()
     }else{
@@ -198,6 +202,13 @@ export class SongListComponent implements OnInit,AfterViewInit, OnChanges {
         this.filteredSongs.push(this.songs[i])
       }
     }
+  }
+
+  getAlbumArtistPath(passedSong:song, album:boolean){
+    var entity = album ? passedSong.album : passedSong.artist
+    var assetsPath = album ? 'assets/albums/' : 'assets/artists/'
+    var imgPath = assetsPath + entity + '.jpg'
+    return imgPath
   }
 
 }

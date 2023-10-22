@@ -6,3 +6,8 @@ Notes for getting direct data form yt
             -> return h.z8
         })
 -Data flowin in is long string - try and find the type or conversion or useage of string
+-Issue iwth string above is video plays on break so data is already in client
+search oga and see: rGa.prototype.Hf - doesn't break when debug
+-Look at youtube.com/s/player/xxxxx/play_icsxxxx/miniplayer.js
+   -this.player.getVideoData()
+--Look at youtube.com/s/player/xxxxx/play_icsxxxx/base.js

@@ -19,6 +19,10 @@
         <label for="song-artist">Artist</label>
         <input type="text" name="song-artist" formControlName="songArtist">
         <button type="button" class="song-info-dialog-update-btn" (click)="updateSong(songInfoSong)" [disabled]="!updateSongForm.valid">Update</button>
+        <div>
+          <img src="{{songInfoAlbumArtPath}}" onError="this.src='assets/albums/album-default.jpg'"/>
+          <img src="{{songInfoArtisArtPath}}" onError="this.src='assets/artists/artist-default.jpg'"/>
+        </div>
       </form>
     </dialog>
     <tr

@@ -136,7 +136,7 @@ app.put('/api/addsongtoplaylist', (req, res) => {
 
 app.post('/api/newsong', async (req, res) => {
     try{
-        throw 'endpoint down'
+        // throw 'endpoint down'
         console.log('POST /api/newsong')
         console.log(req.body)
         
@@ -150,14 +150,14 @@ app.post('/api/newsong', async (req, res) => {
         var newName = `${newId},${body.artist},${body.album},${body.name}.mp3`
 
         // Setup
-        const browser = await chromium.launch();
+        const browser = await chromium.launch({headless:false});
         const context = await browser.newContext();
         const page = await context.newPage();
 
         await page.goto(yttopm3url);
 
         // Type into search box.
-        await page.type('input[name="video"]', ytUrl);
+        await page.type('input[name="url"]', ytUrl);
         var searchBtnSelector = 'button[type="submit"]'
         if(searchBtnSelector){
             await page.click(searchBtnSelector);
@@ -166,22 +166,12 @@ app.post('/api/newsong', async (req, res) => {
         }
         
 
-        // convert
-        // await page.waitForSelector('#btn-convert',{timeout:30000})
-        // await page.click('#btn-convert');
-
-        //download 
-        var downloadSelector = '#mp3data a'
-        await page.screenshot({ path: 'logs/test.png' });
-        var dlbtn = await page.waitForSelector(downloadSelector ,{timeout:30000})
-        await delay(500);
+        await delay(3000)
         const downloadPromise = page.waitForEvent('download');
-        await page.click(downloadSelector);
         const download = await downloadPromise;
         // Wait for the download process to complete.
         await download.path()
         await download.saveAs(fullDownloadFolderPath+newName);
-    
     
         // Teardown
         await context.close();

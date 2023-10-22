@@ -24,6 +24,13 @@
   height: 150px;
 }
 
+.artist-list-img:hover{
+  border-color: rgb(214, 167, 47);
+  border-width: .1;
+  border-style: solid;
+  transition-delay:90ms;
+}
+
 .artist-list-name{
   text-align: center;
 }
