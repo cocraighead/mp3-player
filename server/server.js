@@ -6,7 +6,7 @@ app.use(express.urlencoded({ extended: true }));
 
 const fs = require('fs');
 const port = 3000
-var json = {}
+var json = {'library': {}}
 
 
 app.get('/api/', (req, res) => {
@@ -22,7 +22,6 @@ app.get('/api/db', (req, res) => {
 app.get('/api/refreshDb', (req, res) => {
     console.log('GET: /api/refreshDb')
     var files = fs.readdirSync('./music');
-    json = {'library': {}}
     
     for(let i=0;i<files.length;i++){
         var fullName = files[i]
@@ -140,7 +139,7 @@ app.post('/api/newsong', async (req, res) => {
         console.log('POST /api/newsong')
         console.log(req.body)
         
-        var yttopm3url = 'https://yt2mp3.info/?l=en';
+        var yttopm3url = 'https://ytmp3.ec/10/';
         var fullDownloadFolderPath = 'C:/Users/Zed God/Documents/Code Docs/Music player/mp3-player/server/music/';
 
         var body = req.body
@@ -157,25 +156,38 @@ app.post('/api/newsong', async (req, res) => {
         await page.goto(yttopm3url);
 
         // Type into search box.
-        await page.type('input[name="url"]', ytUrl);
+        await page.type('input[id="url"]', ytUrl);
+        page.on('download', download => download.path().then((filePath)=>{
+            console.log('native file path: ',filePath)
+            var desitinationPath = fullDownloadFolderPath+newName
+            fs.copyFile(filePath, desitinationPath, (err) => {
+                if(err){
+                    console.error(err);
+                }
+                console.log('File copied successfully!');
+            })
+            // Teardown
+            context.close();
+            browser.close();
+        }));
         var searchBtnSelector = 'button[type="submit"]'
         if(searchBtnSelector){
             await page.click(searchBtnSelector);
         }else{
             await page.keyboard.press('Enter')
         }
-        
 
-        await delay(3000)
-        const downloadPromise = page.waitForEvent('download');
-        const download = await downloadPromise;
-        // Wait for the download process to complete.
-        await download.path()
-        await download.saveAs(fullDownloadFolderPath+newName);
-    
-        // Teardown
-        await context.close();
-        await browser.close();
+
+
+        var clickDownloadLoadNeeded = false // toggle to click download after submit
+        if(clickDownloadLoadNeeded){
+            await delay(6000)
+            var downloadBtnSelector = 'Download'
+            await page.getByText('Download', { exact: true }).click();
+            if(downloadBtnSelector){
+                await page.click(downloadBtnSelector);
+            }
+        }
         res.send({id:newId});
     }catch(e){
         console.log(e)
