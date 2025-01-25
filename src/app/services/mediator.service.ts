@@ -44,4 +44,9 @@ export class MediatorService {
     return this.http.put(this.serverURL+'/addsongtoplaylist', body)
   }
 
+  importMp3(importpath:string){
+    var body = {folderPath: importpath}
+    return this.http.post(this.serverURL+'/mp3import', body)
+  }
+
 }

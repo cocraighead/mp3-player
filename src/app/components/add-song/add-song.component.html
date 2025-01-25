@@ -2,25 +2,45 @@
     <div class="back-arrow" (click)="backToLibrary()">&#8592;</div>
     <div class="title">Add new song</div>
 </div>
-
-<form [formGroup]="newSongForm">
-
-    <div class="fields-wrapper">
-        <label for="youtubeLink">YouTube Link: </label>
-        <input id="youtubeLink" type="text" formControlName="youtubeLink">
-      
-        <label for="name">Song Name: </label>
-        <input id="name" type="text" formControlName="name">
-    
-        <label for="artist">Artist: </label>
-        <input id="artist" type="text" formControlName="artist">
-    
-        <label for="album">Album: </label>
-        <input id="album" type="text" formControlName="album">
-    
-        <button type="button" [ngClass]="{'active-submit-button': (newSongForm.valid && !loading)}" [disabled]="!newSongForm.valid || loading" (click)="submitNewSong()">Submit</button>
-    </div>
-    
-  
-  </form>
+<div class="form-toggle-wrapper">
+    <div [ngClass]="{ 'active-toggle':  importTypeToggle, 'form-toggle-button': true}" (click)="changeForm(true)">Youtube to MP3</div>
+    <div [ngClass]="{ 'active-toggle': !importTypeToggle, 'form-toggle-button': true}" (click)="changeForm(false)">Folder of Files</div>
+</div>
 <div *ngIf="loading">Loading</div>
+<div *ngIf="importTypeToggle">
+    
+    <form [formGroup]="newSongForm">
+    
+        <div class="fields-wrapper">
+            <label for="youtubeLink">YouTube Link: </label>
+            <input id="youtubeLink" type="text" formControlName="youtubeLink">
+          
+            <label for="name">Song Name: </label>
+            <input id="name" type="text" formControlName="name">
+        
+            <label for="artist">Artist: </label>
+            <input id="artist" type="text" formControlName="artist">
+        
+            <label for="album">Album: </label>
+            <input id="album" type="text" formControlName="album">
+        
+            <button type="button" [ngClass]="{'active-submit-button': (newSongForm.valid && !loading)}" [disabled]="!newSongForm.valid || loading" (click)="submitNewSong()">Submit</button>
+        </div>
+        
+      
+      </form>
+</div>
+<div *ngIf="!importTypeToggle">
+    <form [formGroup]="importMp3Form">
+    
+        <div class="fields-wrapper">
+            <label for="importpath">Import Path: </label>
+            <input id="importpath" type="text" formControlName="importpath">
+        
+            <button type="button" [ngClass]="{'active-submit-button': (importMp3Form.valid && !loading)}" [disabled]="!importMp3Form.valid || loading" (click)="submitImport()">Submit</button>
+        </div>
+        
+      
+      </form>
+</div>
+

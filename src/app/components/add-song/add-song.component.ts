@@ -15,14 +15,24 @@ export class AddSongComponent implements OnInit {
 
   loading:boolean = false
 
+  importTypeToggle = true // true is youtube 2 mp3
+
   newSongForm = new FormGroup({
     youtubeLink: new FormControl('', Validators.required),
     name: new FormControl('', Validators.required),
     artist: new FormControl('', Validators.required),
     album: new FormControl('', Validators.required),
   });
+  importMp3Form = new FormGroup({
+    importpath: new FormControl('', Validators.required),
+  });
 
   ngOnInit(): void {
+  }
+
+  changeForm(setTo){
+    this.clearForms()
+    this.importTypeToggle = setTo
   }
 
   submitNewSong(){
@@ -39,7 +49,7 @@ export class AddSongComponent implements OnInit {
           alert(r.error)
           self.loading = false
         }else{
-          this.clearForm()
+          this.clearForms()
           this.refreshService.triggerLibraryRefresh()
           self.loading = false
         }
@@ -47,8 +57,25 @@ export class AddSongComponent implements OnInit {
     }
   }
 
-  clearForm(){
+  clearForms(){
     this.newSongForm.reset()
+    this.importMp3Form.reset()
+  }
+
+  submitImport(){
+    var self = this
+    this.mediator.importMp3(
+      this.importMp3Form.get('importpath').value,
+    ).subscribe((r:any)=>{
+      if(r.error){
+        alert(r.error)
+        self.loading = false
+      }else{
+        this.clearForms()
+        this.refreshService.triggerLibraryRefresh()
+        self.loading = false
+      }
+    })
   }
 
   backToLibrary(){

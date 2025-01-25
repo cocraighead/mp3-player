@@ -5,6 +5,26 @@
     margin: 14px; 
 }
 
+.form-toggle-wrapper{
+    display: flex;
+    justify-content: start;
+    margin-left: 14px;
+}
+
+.form-toggle-wrapper{
+    cursor: pointer;
+}
+
+.form-toggle-button{
+    padding: 16px;
+    background-color: transparent;
+    border: 1px black solid;
+}
+
+.active-toggle{
+    background-color: rgb(214, 167, 47);
+}
+
 .active-submit-button{
     background-color: rgb(214, 167, 47);
 }
