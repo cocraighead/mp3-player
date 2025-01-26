@@ -39,78 +39,78 @@ app.put('/api/updatesong', async (req, res) => {
 app.post('/api/mp3import', async (req, res) => {
     res.send(post_apiMp3import(req, res));
 })
-app.post('/api/newsong', async (req, res) => {
-    try{
-        // throw 'endpoint down'
-        console.log('POST /api/newsong')
-        console.log(req.body)
-        
-        var yttopm3url = 'https://ytmp3.ec/10/';
-        var fullDownloadFolderPath = 'C:/Users/Zed God/Documents/Code Docs/Music player/mp3-player/server/music/';
+async function downloadSong(browser,context,ytlink,pageTitle){
+    console.log('downloading',pageTitle)
+    
+    var yttopm3url = 'https://ytmp3.ec/10/';
+    var fullDownloadFolderPath = 'C:/Users/Zed God/Documents/Code Docs/Music player/mp3-player/server/music/';
 
-        var body = req.body
-        var ytUrl = decodeURIComponent(body.ytlink)
-        console.log(ytUrl)
+    var ytUrl = decodeURIComponent(ytlink)
+    console.log(ytUrl)
+
+    // Setup
+    const page = await context.newPage();
+
+    await page.goto(yttopm3url);
+
+    // Type into search box.
+    await page.type('input[id="url"]', ytUrl);
+    page.on('download', download => download.path().then((filePath)=>{
+        console.log('native file path: ',filePath)
         var newId = getNewId(fullDownloadFolderPath)
-        var newName = `${newId},${body.artist},${body.album},${body.name}.mp3`
-
-        // Setup
-        const browser = await chromium.launch({headless:false});
-        const context = await browser.newContext();
-        const page = await context.newPage();
-
-        await page.goto(yttopm3url);
-
-        // Type into search box.
-        await page.type('input[id="url"]', ytUrl);
-        page.on('download', download => download.path().then((filePath)=>{
-            console.log('native file path: ',filePath)
-            var desitinationPath = fullDownloadFolderPath+newName
-            fs.copyFile(filePath, desitinationPath, (err) => {
-                if(err){
-                    console.error(err);
-                }
-                console.log('File copied successfully!');
-            })
-            // Teardown
-            context.close();
-            browser.close();
-        }));
-        var searchBtnSelector = 'button[type="submit"]'
-        if(searchBtnSelector){
-            await page.click(searchBtnSelector);
-        }else{
-            await page.keyboard.press('Enter')
-        }
-
-
-
-        var clickDownloadLoadNeeded = false // toggle to click download after submit
-        if(clickDownloadLoadNeeded){
-            await delay(6000)
-            var downloadBtnSelector = 'Download'
-            await page.getByText('Download', { exact: true }).click();
-            if(downloadBtnSelector){
-                await page.click(downloadBtnSelector);
+        var newName = `${newId},art,alb,${pageTitle}.mp3`
+        var desitinationPath = fullDownloadFolderPath+newName
+        fs.copyFile(filePath, desitinationPath, (err) => {
+            if(err){
+                console.error(err);
             }
-        }
-        res.send({id:newId});
-    }catch(e){
-        console.log(e)
-        res.send({error:e});
+            console.log('File copied successfully!');
+        })
+        // Teardown
+        page.close()
+    }));
+    var searchBtnSelector = 'button[type="submit"]'
+    if(searchBtnSelector){
+        await page.click(searchBtnSelector);
+    }else{
+        await page.keyboard.press('Enter')
     }
-})
+
+    var clickDownloadLoadNeeded = false // toggle to click download after submit
+    if(clickDownloadLoadNeeded){
+        await delay(6000)
+        var downloadBtnSelector = 'Download'
+        await page.getByText('Download', { exact: true }).click();
+        if(downloadBtnSelector){
+            await page.click(downloadBtnSelector);
+        }
+    }
+    return true
+}
 app.post('/api/searchyoutube', async (req, res) => {
     try{
         // throw 'endpoint down'
         console.log('POST /api/scrapeyoutubeinfo')
         console.log(req.body)
         var body = req.body
+        var browserArgs = []
+        if(body.muteConfig){
+            browserArgs.push('--mute-audio')
+        }
 
         // Setup
-        const browser = await chromium.launch({headless:false});
+        const browser = await chromium.launch({headless:false,args: browserArgs});
         const context = await browser.newContext();
         const page = await context.newPage();
+
+        page.on('close', () => {
+            console.log ('page closed');
+            context.close()
+            browser.close()
+            res.send({
+                res: true
+            })
+        })
 
         await page.goto('https://www.youtube.com/');
 
@@ -123,7 +123,7 @@ app.post('/api/searchyoutube', async (req, res) => {
             divToInsert.innerText = 'Choose Song'
             divToInsert.style = 'font-size: large; border: 1px black solid; cursor: pointer; z-index: 100; position: fixed; right: 12px; bottom: 32px; padding: 22px; background-color: rgb(214, 167, 47);'
             divToInsert.onclick = function(e){ 
-                confirm("Select Video")
+                confirm("Download Video as MP3")
             }    
             document.body.appendChild(divToInsert);
         })
@@ -133,15 +133,9 @@ app.post('/api/searchyoutube', async (req, res) => {
             let titleDiv = await page.locator('#title > h1')
             let titleText = await titleDiv.innerText()
             console.log('titleText',titleText)
-            // Teardown
-            context.close();
-            browser.close();
-            res.send({
-                ytUrl:page.url(),
-                videoTitle: titleText
-            });
-        });
-        
+            downloadSong(browser,context,page.url(),titleText)
+            await page.bringToFront()
+        })
     }catch(e){
         console.log(e)
         res.send({error:e});

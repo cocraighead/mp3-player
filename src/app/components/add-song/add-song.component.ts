@@ -13,16 +13,15 @@ export class AddSongComponent implements OnInit {
 
   constructor(private mediator: MediatorService, private router: Router, private refreshService: RefreshService) { }
 
-  loading:boolean = false
+  showYoutubeisOpen:boolean = false
+  showImportLoading:boolean = false
 
   importTypeToggle = true // true is youtube 2 mp3
 
-  newSongForm = new FormGroup({
-    youtubeLink: new FormControl('', Validators.required),
-    name: new FormControl('', Validators.required),
-    artist: new FormControl('', Validators.required),
-    album: new FormControl('', Validators.required),
+  findSongForm = new FormGroup({
+    muteConfig: new FormControl(true),
   });
+
   importMp3Form = new FormGroup({
     importpath: new FormControl('', Validators.required),
   });
@@ -35,45 +34,23 @@ export class AddSongComponent implements OnInit {
     this.importTypeToggle = setTo
   }
 
-  submitNewSong(){
-    var self = this
-    if(this.newSongForm.valid){
-      this.loading = true
-      this.mediator.addSong(
-        this.newSongForm.get('youtubeLink').value,
-        this.newSongForm.get('name').value,
-        this.newSongForm.get('artist').value,
-        this.newSongForm.get('album').value
-      ).subscribe((r:any)=>{
-        if(r.error){
-          console.error(r.error)
-          self.loading = false
-        }else{
-          this.clearForms()
-          this.refreshService.triggerLibraryRefresh()
-          self.loading = false
-        }
-      })
-    }
-  }
-
   clearForms(){
-    this.newSongForm.reset()
     this.importMp3Form.reset()
   }
 
   submitImport(){
     var self = this
+    self.showImportLoading = true
     this.mediator.importMp3(
       this.importMp3Form.get('importpath').value,
     ).subscribe((r:any)=>{
       if(r.error){
         console.error(r.error)
-        self.loading = false
+        self.showImportLoading = false
       }else{
         this.clearForms()
         this.refreshService.triggerLibraryRefresh()
-        self.loading = false
+        self.showImportLoading = false
       }
     })
   }
@@ -84,18 +61,19 @@ export class AddSongComponent implements OnInit {
   
   openYoutube(){
     var self = this
-    this.mediator.searchyoutube().subscribe((r:any)=>{
+    if(self.showYoutubeisOpen){
+      return 
+    }
+    self.showYoutubeisOpen = true
+    this.mediator.searchyoutube(
+      this.findSongForm.get('muteConfig').value,
+    ).subscribe((r:any)=>{
       if(r.error){
         console.error(r.error)
+        self.showYoutubeisOpen = false
       }else{
-        if(r.ytUrl){
-          this.newSongForm.get('youtubeLink').setValue(r.ytUrl);
-        }
-        if(r.videoTitle){
-          this.newSongForm.get('name').setValue(r.videoTitle);
-          this.newSongForm.get('artist').setValue('art');
-          this.newSongForm.get('album').setValue('alb');
-        }
+        this.refreshService.triggerLibraryRefresh()
+        self.showYoutubeisOpen = false
       }
     })
   }

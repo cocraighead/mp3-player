@@ -26,12 +26,6 @@ export class MediatorService {
     return this.http.get(this.serverURL+'/song/'+songId)
   }
 
-  addSong(youtubeLink:string,name:string,artist:string,album:string){
-    var encodedUrl = encodeURIComponent(youtubeLink)
-    var body = {ytlink: encodedUrl, artist: artist, album: album, name: name}
-    return this.http.post(this.serverURL+'/newsong', body)
-  }
-
   updateSong(song:song, newName:string, newArtist:string, newAlbum:string){
     var songId = song.id
     var newFullName = `${song.id},${newArtist},${newAlbum},${newName}`
@@ -49,8 +43,8 @@ export class MediatorService {
     return this.http.post(this.serverURL+'/mp3import', body)
   }
 
-  searchyoutube(){
-    var body = {}
+  searchyoutube(muteConfig){
+    var body = {muteConfig:muteConfig}
     return this.http.post(this.serverURL+'/searchyoutube', body)
   }
 

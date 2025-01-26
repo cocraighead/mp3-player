@@ -41,13 +41,30 @@
 .back-arrow:hover{
     cursor: pointer;
 }
-
-.pre-populate-song-info{
-    width: 70px;
+.open-youtube-btn{
+    width: 74px;
+    margin-left: 14px;
     margin-top: 24px;
     margin-bottom: 8px;
     cursor: pointer;
     padding: 5px;
     background-color: rgb(214, 167, 47);
     border: 1px black solid;
+}
+.open-youtube-btn-disabled{
+    width: 74px;
+    margin-top: 24px;
+    margin-left: 14px;
+    margin-bottom: 8px;
+    padding: 5px;
+    background-color: grey;
+    border: 1px black solid;
+}
+
+.loading-msg{
+    margin: 14px;
+}
+
+input[type="checkbox"]{
+    width: 14px;
 }

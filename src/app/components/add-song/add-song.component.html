@@ -6,29 +6,18 @@
     <div [ngClass]="{ 'active-toggle':  importTypeToggle, 'form-toggle-button': true}" (click)="changeForm(true)">Youtube to MP3</div>
     <div [ngClass]="{ 'active-toggle': !importTypeToggle, 'form-toggle-button': true}" (click)="changeForm(false)">Folder of Files</div>
 </div>
-<div *ngIf="loading">Loading</div>
+<div class="loading-msg" *ngIf="showImportLoading">Loading Import</div>
+<div class="loading-msg" *ngIf="showYoutubeisOpen">Youtube is open. Select Songs in tab</div>
 <div *ngIf="importTypeToggle">
-    
-    <form [formGroup]="newSongForm">
+    <form [formGroup]="findSongForm">
     
         <div class="fields-wrapper">
-            <div class="pre-populate-song-info" (click)="openYoutube()">Find Song</div>
-            <label for="youtubeLink">YouTube Link: </label>
-            <input id="youtubeLink" type="text" formControlName="youtubeLink">
-            <label for="name">Song Name: </label>
-            <input id="name" type="text" formControlName="name">
+            <label for="muteConfig">Mute Youtube: </label>
+            <input id="muteConfig" type="checkbox" formControlName="muteConfig">
         
-            <label for="artist">Artist: </label>
-            <input id="artist" type="text" formControlName="artist">
-        
-            <label for="album">Album: </label>
-            <input id="album" type="text" formControlName="album">
-        
-            <button type="button" [ngClass]="{'active-submit-button': (newSongForm.valid && !loading)}" [disabled]="!newSongForm.valid || loading" (click)="submitNewSong()">Submit</button>
         </div>
-        
-      
-      </form>
+    </form>
+    <div [ngClass]="{'open-youtube-btn-disabled': showYoutubeisOpen, 'open-youtube-btn': !showYoutubeisOpen}" (click)="openYoutube()">Find Songs</div>
 </div>
 <div *ngIf="!importTypeToggle">
     <form [formGroup]="importMp3Form">
@@ -37,7 +26,7 @@
             <label for="importpath">Import Path: </label>
             <input id="importpath" type="text" formControlName="importpath">
         
-            <button type="button" [ngClass]="{'active-submit-button': (importMp3Form.valid && !loading)}" [disabled]="!importMp3Form.valid || loading" (click)="submitImport()">Submit</button>
+            <button type="button" [ngClass]="{'active-submit-button': (importMp3Form.valid && !showImportLoading)}" [disabled]="!importMp3Form.valid || showImportLoading" (click)="submitImport()">Submit</button>
         </div>
         
       

@@ -8,7 +8,7 @@ import * as _ from 'lodash';
 import { song, playlist } from '../../types/types';
 
 // TODO
-// import where it lists the open youtube tabs and lets you import by tab
+// Move add song to song list header, open in modal - if song list is play list, songs get added to it
 // Fix update song - needs testing
 // newsong more error handle and debug - weakest spot
 // delete songs
