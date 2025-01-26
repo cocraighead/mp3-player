@@ -46,7 +46,7 @@ export class AddSongComponent implements OnInit {
         this.newSongForm.get('album').value
       ).subscribe((r:any)=>{
         if(r.error){
-          alert(r.error)
+          console.error(r.error)
           self.loading = false
         }else{
           this.clearForms()
@@ -68,7 +68,7 @@ export class AddSongComponent implements OnInit {
       this.importMp3Form.get('importpath').value,
     ).subscribe((r:any)=>{
       if(r.error){
-        alert(r.error)
+        console.error(r.error)
         self.loading = false
       }else{
         this.clearForms()
@@ -80,6 +80,24 @@ export class AddSongComponent implements OnInit {
 
   backToLibrary(){
     this.router.navigate(['library']);
+  }
+  
+  openYoutube(){
+    var self = this
+    this.mediator.searchyoutube().subscribe((r:any)=>{
+      if(r.error){
+        console.error(r.error)
+      }else{
+        if(r.ytUrl){
+          this.newSongForm.get('youtubeLink').setValue(r.ytUrl);
+        }
+        if(r.videoTitle){
+          this.newSongForm.get('name').setValue(r.videoTitle);
+          this.newSongForm.get('artist').setValue('art');
+          this.newSongForm.get('album').setValue('alb');
+        }
+      }
+    })
   }
 
 }

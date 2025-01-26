@@ -49,4 +49,9 @@ export class MediatorService {
     return this.http.post(this.serverURL+'/mp3import', body)
   }
 
+  searchyoutube(){
+    var body = {}
+    return this.http.post(this.serverURL+'/searchyoutube', body)
+  }
+
 }

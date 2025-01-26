@@ -100,6 +100,53 @@ app.post('/api/newsong', async (req, res) => {
         res.send({error:e});
     }
 })
+app.post('/api/searchyoutube', async (req, res) => {
+    try{
+        // throw 'endpoint down'
+        console.log('POST /api/scrapeyoutubeinfo')
+        console.log(req.body)
+        var body = req.body
+
+        // Setup
+        const browser = await chromium.launch({headless:false});
+        const context = await browser.newContext();
+        const page = await context.newPage();
+
+        await page.goto('https://www.youtube.com/');
+
+        let searchSelector = 'input[name="search_query"]'
+        await page.locator(searchSelector).first()
+
+        await page.evaluate(() => {
+            let divToInsert = document.createElement('div');
+            divToInsert.id = 'custom-div-inserted'
+            divToInsert.innerText = 'Choose Song'
+            divToInsert.style = 'font-size: large; border: 1px black solid; cursor: pointer; z-index: 100; position: fixed; right: 12px; bottom: 32px; padding: 22px; background-color: rgb(214, 167, 47);'
+            divToInsert.onclick = function(e){ 
+                confirm("Select Video")
+            }    
+            document.body.appendChild(divToInsert);
+        })
+
+        page.on('dialog', async dialog => {
+            // find title
+            let titleDiv = await page.locator('#title > h1')
+            let titleText = await titleDiv.innerText()
+            console.log('titleText',titleText)
+            // Teardown
+            context.close();
+            browser.close();
+            res.send({
+                ytUrl:page.url(),
+                videoTitle: titleText
+            });
+        });
+        
+    }catch(e){
+        console.log(e)
+        res.send({error:e});
+    }
+})
 // ACTUAL FUNCTIONS
 function get_api(req, res){
     console.log('GET: /api')

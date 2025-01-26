@@ -41,3 +41,13 @@
 .back-arrow:hover{
     cursor: pointer;
 }
+
+.pre-populate-song-info{
+    width: 70px;
+    margin-top: 24px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    padding: 5px;
+    background-color: rgb(214, 167, 47);
+    border: 1px black solid;
+}

@@ -12,9 +12,9 @@
     <form [formGroup]="newSongForm">
     
         <div class="fields-wrapper">
+            <div class="pre-populate-song-info" (click)="openYoutube()">Find Song</div>
             <label for="youtubeLink">YouTube Link: </label>
             <input id="youtubeLink" type="text" formControlName="youtubeLink">
-          
             <label for="name">Song Name: </label>
             <input id="name" type="text" formControlName="name">
         
