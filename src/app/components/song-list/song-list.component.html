@@ -1,5 +1,6 @@
 <div class="search-wrapper">
   <input class="search-input" type="text" placeholder="search" (input)="searchChanged($event)">
+  <button (click)="toggleAddSong()" class="add-song-button"><span class="add-song-plus-icon">+</span> Add Song</button>
 </div>
 
 <div class="table-wrapper">
@@ -7,6 +8,12 @@
     <tr class="header-row">
       <th class="table-headers" *ngFor="let col of displayedColumns"><span (click)="sortColumnClicked(col)" class="header-words"  [ngClass]="{'header-words-focused': col==sortCol}">{{col}}</span></th>
     </tr>
+    <dialog #AddSongDialog class="song-info-dialog">
+      <div class="song-info-dialog-menu">
+        <button (click)="toggleAddSong()">X</button>
+      </div>
+      <app-add-song></app-add-song>
+    </dialog>
     <dialog #SongInfoDialog class="song-info-dialog">
       <div class="song-info-dialog-menu">
         <button (click)="toggleSongInfo(songInfoSong)">X</button>

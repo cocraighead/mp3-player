@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { PlayerService } from '../../services/player.service';
 import { MediatorService } from 'src/app/services/mediator.service';
 import { RefreshService } from 'src/app/services/refresh-service';
-
+import { AddSongComponent } from '../../components/add-song/add-song.component';
 import { song } from '../../types/types';
 
 @Component({
@@ -18,6 +18,7 @@ export class SongListComponent implements OnInit,AfterViewInit, OnChanges {
   @Input() songs:song[]
   filteredSongs:song[]
   @ViewChild('SongInfoDialog') songInfoDialog: ElementRef;
+  @ViewChild('AddSongDialog') addSongDialog: ElementRef;
   songInfoSong:song
   songInfoAlbumArtPath:string
   songInfoArtisArtPath : string
@@ -153,8 +154,16 @@ export class SongListComponent implements OnInit,AfterViewInit, OnChanges {
       })
     }
   }
-
   
+  toggleAddSong(){
+    if(!this.addSongDialog.nativeElement.open){
+      this.addSongDialog.nativeElement.show()
+    }else{
+      this.refreshService.triggerLibraryRefresh()
+      this.addSongDialog.nativeElement.close()
+    }
+  }
+
   toggleSongInfo(passedSong:song){
     if(!this.songInfoDialog.nativeElement.open){
       this.songInfoSong = passedSong
@@ -163,8 +172,9 @@ export class SongListComponent implements OnInit,AfterViewInit, OnChanges {
       this.fillInSongInfoDialogForm(passedSong)
       this.songInfoDialog.nativeElement.show()
     }else{
-      this.songInfoDialog.nativeElement.close()
+      this.refreshService.triggerLibraryRefresh()
       this.songInfoSong = undefined
+      this.songInfoDialog.nativeElement.close()
     }
   }
 

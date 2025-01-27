@@ -1,7 +1,3 @@
-<div class="fields-wrapper">
-    <div class="back-arrow" (click)="backToLibrary()">&#8592;</div>
-    <div class="title">Add new song</div>
-</div>
 <div class="form-toggle-wrapper">
     <div [ngClass]="{ 'active-toggle':  importTypeToggle, 'form-toggle-button': true}" (click)="changeForm(true)">Youtube to MP3</div>
     <div [ngClass]="{ 'active-toggle': !importTypeToggle, 'form-toggle-button': true}" (click)="changeForm(false)">Folder of Files</div>
@@ -10,14 +6,16 @@
 <div class="loading-msg" *ngIf="showYoutubeisOpen">Youtube is open. Select Songs in tab</div>
 <div *ngIf="importTypeToggle">
     <form [formGroup]="findSongForm">
-    
         <div class="fields-wrapper">
-            <label for="muteConfig">Mute Youtube: </label>
-            <input id="muteConfig" type="checkbox" formControlName="muteConfig">
-        
+            <div class="checkbox-wrapper">
+                <label for="muteConfig">Mute Youtube: </label>
+                <input id="muteConfig" type="checkbox" formControlName="muteConfig">
+            </div>
         </div>
     </form>
-    <div [ngClass]="{'open-youtube-btn-disabled': showYoutubeisOpen, 'open-youtube-btn': !showYoutubeisOpen}" (click)="openYoutube()">Find Songs</div>
+    <div class="find-songs-button-wrapper">
+        <div [ngClass]="{'open-youtube-btn-disabled': showYoutubeisOpen, 'open-youtube-btn': true}" (click)="openYoutube()">Find Songs</div>
+    </div>
 </div>
 <div *ngIf="!importTypeToggle">
     <form [formGroup]="importMp3Form">

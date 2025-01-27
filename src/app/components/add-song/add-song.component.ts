@@ -49,14 +49,9 @@ export class AddSongComponent implements OnInit {
         self.showImportLoading = false
       }else{
         this.clearForms()
-        this.refreshService.triggerLibraryRefresh()
         self.showImportLoading = false
       }
     })
-  }
-
-  backToLibrary(){
-    this.router.navigate(['library']);
   }
   
   openYoutube(){
@@ -72,7 +67,6 @@ export class AddSongComponent implements OnInit {
         console.error(r.error)
         self.showYoutubeisOpen = false
       }else{
-        this.refreshService.triggerLibraryRefresh()
         self.showYoutubeisOpen = false
       }
     })

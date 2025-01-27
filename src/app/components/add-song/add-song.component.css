@@ -7,8 +7,8 @@
 
 .form-toggle-wrapper{
     display: flex;
-    justify-content: start;
-    margin-left: 14px;
+    justify-content: center;
+    width: 100%;
 }
 
 .form-toggle-wrapper{
@@ -16,7 +16,7 @@
 }
 
 .form-toggle-button{
-    padding: 16px;
+    padding: 10px 16px 10px 16px;
     background-color: transparent;
     border: 1px black solid;
 }
@@ -41,28 +41,32 @@
 .back-arrow:hover{
     cursor: pointer;
 }
+
+.find-songs-button-wrapper{
+    display: flex;
+    justify-content: center;
+}
+
 .open-youtube-btn{
     width: 74px;
     margin-left: 14px;
     margin-top: 24px;
     margin-bottom: 8px;
     cursor: pointer;
-    padding: 5px;
+    padding: 50px;
     background-color: rgb(214, 167, 47);
     border: 1px black solid;
 }
 .open-youtube-btn-disabled{
-    width: 74px;
-    margin-top: 24px;
-    margin-left: 14px;
-    margin-bottom: 8px;
-    padding: 5px;
     background-color: grey;
-    border: 1px black solid;
 }
 
 .loading-msg{
     margin: 14px;
+}
+
+.checkbox-wrapper{
+    display: flex;
 }
 
 input[type="checkbox"]{

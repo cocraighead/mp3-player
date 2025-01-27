@@ -9,6 +9,8 @@ import { song, playlist } from '../../types/types';
 
 // TODO
 // Move add song to song list header, open in modal - if song list is play list, songs get added to it
+// save song id song time, and time of save every ~10 seconds to cookies or local storage - on start of libary/radio check cache and start song 
+// ^^ also cache queue ids - re-add to queue
 // Fix update song - needs testing
 // newsong more error handle and debug - weakest spot
 // delete songs
@@ -140,9 +142,4 @@ export class LibraryComponent implements OnInit {
     this.currentPlaylist = playList
     this.currentSonglist = playList.songs
   }
-
-  addSongClicked(){
-    this.router.navigate(['add']);
-  }
-
 }
