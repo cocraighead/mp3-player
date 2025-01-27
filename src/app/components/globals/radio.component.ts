@@ -17,6 +17,7 @@ export class RadioComponent implements OnInit {
   queueDragAndDropHovered:boolean = false;
   queueDragAndDropFrontHovered:boolean = false;
   queueDragAndDropbackHovered:boolean = false;
+  cacheKey = 'ccSongPlayerCurrentSongData'
 
 
   constructor(public player:PlayerService) { }
@@ -31,6 +32,9 @@ export class RadioComponent implements OnInit {
     this.player.mainPlayer.addEventListener("durationchange", (e)=>{
       this.currentSongLength = Math.round(e.srcElement.duration)
     });
+    this.reEnterCachedSong()
+    // setup save of current song
+    this.setUpSaveCurrentSong()
   }
 
   playClicked(){
@@ -141,5 +145,62 @@ export class RadioComponent implements OnInit {
 
   timerChanged($e){
     this.player.setTime($e.value)
+  }
+
+  setUpSaveCurrentSong(){
+    window.setInterval(this.cacheCurrentSong.bind(this), 10000);
+  }
+
+  cacheCurrentSong(){
+    if(this.currentSong && this.player.state === 0){
+      let data = {
+        currentSong: {
+          id: this.currentSong.id,
+          name: this.currentSong.name,
+          artist: this.currentSong.artist,
+          album: this.currentSong.album,
+          filePath: this.currentSong.filePath,
+        },
+        currentSongTime: this.currentSongTime,
+        currentTime: Date.now(),
+      }
+      sessionStorage.setItem(this.cacheKey, JSON.stringify(data));
+    }else{
+      this.clearCachedSong()
+    }
+  }
+
+  reEnterCachedSong(){
+    let cachedSongData = this.getCachedSongData()
+    if(cachedSongData){
+      this.clearCachedSong()
+      let now = Date.now()
+      let milisecondsPassed = now - cachedSongData.currentTime
+      if(milisecondsPassed <= 60000 && this.player.state === 2){
+        // create new song - maybe not best practice
+        let songToPlay:song = new song(
+          cachedSongData.currentSong.id,
+          cachedSongData.currentSong.name,
+          cachedSongData.currentSong.artist,
+          cachedSongData.currentSong.album,
+          cachedSongData.currentSong.filePath,
+        )
+        this.player.playNew(songToPlay, []) // todo need to fill old queue
+        this.player.setTime(cachedSongData.currentSongTime)
+      }
+    }
+  }
+
+  getCachedSongData(){
+    // Get saved data from sessionStorage
+    let dataString = sessionStorage.getItem(this.cacheKey);
+    if(dataString){
+      return JSON.parse(dataString)
+    }
+    return undefined
+  }
+
+  clearCachedSong(){
+    sessionStorage.removeItem(this.cacheKey)
   }
 }
