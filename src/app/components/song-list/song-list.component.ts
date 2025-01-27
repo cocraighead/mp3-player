@@ -4,7 +4,7 @@ import { PlayerService } from '../../services/player.service';
 import { MediatorService } from 'src/app/services/mediator.service';
 import { RefreshService } from 'src/app/services/refresh-service';
 import { AddSongComponent } from '../../components/add-song/add-song.component';
-import { song } from '../../types/types';
+import { song, playlist } from '../../types/types';
 
 @Component({
   selector: 'app-song-list',
@@ -16,6 +16,8 @@ export class SongListComponent implements OnInit,AfterViewInit, OnChanges {
   sortCol = 'id'
   sortDirection = true
   @Input() songs:song[]
+  @Input() centerViewType:Number
+  @Input() currentPlaylist:playlist
   filteredSongs:song[]
   @ViewChild('SongInfoDialog') songInfoDialog: ElementRef;
   @ViewChild('AddSongDialog') addSongDialog: ElementRef;

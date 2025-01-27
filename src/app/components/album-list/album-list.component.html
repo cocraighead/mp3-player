@@ -5,7 +5,7 @@
   <div class="album-info-dialog-content">
     <div class="album-info-dialog-title-1">{{albumInfoAlbum?.name}}</div>
     <div class="album-info-dialog-title-2">{{albumInfoAlbum?.songs[0].artist}}</div>
-    <app-song-list [songs]="albumInfoAlbum?.songs"></app-song-list>
+    <app-song-list [songs]="albumInfoAlbum?.songs" [centerViewType]="centerViewType" [currentPlaylist]="currentPlaylist"></app-song-list>
   </div>
 </dialog>
 

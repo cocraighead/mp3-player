@@ -1,6 +1,6 @@
 <div class="search-wrapper">
   <input class="search-input" type="text" placeholder="search" (input)="searchChanged($event)">
-  <button (click)="toggleAddSong()" class="add-song-button"><span class="add-song-plus-icon">+</span> Add Song</button>
+  <button *ngIf="centerViewType==0 && currentPlaylist.id == '-1'" (click)="toggleAddSong()" class="add-song-button"><span class="add-song-plus-icon">+</span> Add Song</button>
 </div>
 
 <div class="table-wrapper">

@@ -114,6 +114,7 @@
 
 .search-input{
   width: 16%;
+  height: 27px;
 }
 
 .add-song-plus-icon{
@@ -130,4 +131,8 @@
 .add-song-button:hover{
   background-color: rgb(221, 188, 103);
   cursor: pointer;
+}
+
+.song-list-title{
+  font-size: 20px;
 }

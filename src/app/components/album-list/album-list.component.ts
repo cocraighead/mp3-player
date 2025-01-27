@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, ViewChild, Input, OnInit, OnChanges,ElementRef } from '@angular/core';
 import { PlayerService } from '../../services/player.service';
-import { song } from '../../types/types';
+import { song, playlist } from '../../types/types';
 
 @Component({
   selector: 'app-album-list',
@@ -9,6 +9,8 @@ import { song } from '../../types/types';
 })
 export class AlbumListComponent implements OnInit,AfterViewInit, OnChanges {
   @Input() songs:song[]
+  @Input() centerViewType:Number
+  @Input() currentPlaylist:playlist
   @ViewChild('AlbumInfoDialog') albumInfoDialog: ElementRef;
   albums:any
   filteredAlbums:any

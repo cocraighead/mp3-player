@@ -4,7 +4,7 @@
   </div>
   <div class="artist-info-dialog-content">
     <div class="artist-info-dialog-title-1">{{artistInfoArtist?.name}}</div>
-    <app-song-list [songs]="artistInfoArtist?.songs"></app-song-list>
+    <app-song-list [songs]="artistInfoArtist?.songs" [centerViewType]="centerViewType" [currentPlaylist]="currentPlaylist"></app-song-list>
   </div>
 </dialog>
 
