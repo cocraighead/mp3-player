@@ -8,6 +8,7 @@ import * as _ from 'lodash';
 import { song, playlist } from '../../types/types';
 
 // TODO
+// drag and drop to open q. Make the area to drop big... BIG. 
 // Move add song to song list header, open in modal - if song list is play list, songs get added to it
 // save song id song time, and time of save every ~10 seconds to cookies or local storage - on start of libary/radio check cache and start song 
 // ^^ also cache queue ids - re-add to queue
