@@ -43,6 +43,17 @@ export class SongQueue{
     this.queue.push(song)
   }
 
+  addArr(songs:song[], shuffleFirst, toFront){
+    if(shuffleFirst){
+      this.shuffleSongArray(songs)
+    }
+    if(toFront){
+      this.queue.unshift(...songs)
+    }else{
+      this.queue.push(...songs)
+    }
+  }
+
   addNext(song:song){
     this.queue.unshift(song)
   }
@@ -65,8 +76,8 @@ export class SongQueue{
     this.queue.splice(index,1)
   }
 
-  shuffleQueue(){
-    let currentIndex = this.queue.length,  randomIndex;
+  shuffleSongArray(songs:song[]){
+    let currentIndex = songs.length,  randomIndex;
 
     // While there remain elements to shuffle.
     while (currentIndex != 0) {
@@ -76,9 +87,13 @@ export class SongQueue{
       currentIndex--;
 
       // And swap it with the current element.
-      [this.queue[currentIndex], this.queue[randomIndex]] = [
-        this.queue[randomIndex], this.queue[currentIndex]];
+      [songs[currentIndex], songs[randomIndex]] = [
+        songs[randomIndex], songs[currentIndex]];
     }
+  }
+
+  shuffleQueue(){
+    this.shuffleSongArray(this.queue)
   }
 
 };

@@ -16,6 +16,8 @@ export class AlbumListComponent implements OnInit,AfterViewInit, OnChanges {
   filteredAlbums:any
   albumInfoAlbum:any
 
+  clickcount:number = 0;
+
   constructor( private player: PlayerService ) {}
 
   ngOnInit() {
@@ -58,17 +60,29 @@ export class AlbumListComponent implements OnInit,AfterViewInit, OnChanges {
 
   ngOnChanges(changes: any){
   }
-
   
   toggleAlbumInfo(album:any){
-    if(!this.albumInfoDialog.nativeElement.open){
-      this.albumInfoAlbum = album
-      this.albumInfoDialog.nativeElement.show()
-    }else{
-      this.albumInfoDialog.nativeElement.close()
-      this.albumInfoAlbum = undefined
-    }
+    this.clickcount += 1
+    setTimeout(()=>{
+      if(this.clickcount === 1){
+        if(!this.albumInfoDialog.nativeElement.open){
+          this.albumInfoAlbum = album
+          this.albumInfoDialog.nativeElement.show()
+        }else{
+          this.albumInfoDialog.nativeElement.close()
+          this.albumInfoAlbum = undefined
+        }
+        this.clickcount = 0
+      }
+    },200)
   }
+
+  queueAlbum(album:any){
+    this.clickcount += 1
+    this.player.playNewSongList(album.songs)
+    this.clickcount = 0
+  }
+
 
   searchChanged($event){
     this.filterAlbums($event.srcElement.value)

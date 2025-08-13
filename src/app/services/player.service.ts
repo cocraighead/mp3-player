@@ -79,6 +79,11 @@ export class PlayerService {
     }
   }
 
+  playNewSongList(songs:song[]){
+    this.songQueue.addArr(songs,this.shuffleOn,true)
+    this.playNext()
+  }
+
   playNext(){
     if(this.currentSong) this.songHistory.addNext(this.currentSong)
     if(!this.songQueue.empty()){

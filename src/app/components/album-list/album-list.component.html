@@ -15,7 +15,7 @@
 
 <div class="album-list-wrapper">
   <ng-container *ngFor="let album of filteredAlbums">
-    <div class="album-list-card" (click)="toggleAlbumInfo(album)">
+    <div class="album-list-card" (click)="toggleAlbumInfo(album)" (dblclick)="queueAlbum(album)">
       <img class="album-list-img" src="{{album.imgPath}}" onerror="this.onerror=null; this.src='assets/albums/album-default.jpg'" draggable="false">
       <div class="album-list-name">{{album.name}}</div>
     </div>

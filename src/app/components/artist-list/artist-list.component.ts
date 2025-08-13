@@ -16,6 +16,8 @@ export class ArtistListComponent implements OnInit,AfterViewInit, OnChanges {
   filteredArtists:any
   artistInfoArtist:any
 
+  clickcount:number = 0;
+
   constructor( private player: PlayerService ) {}
 
   ngOnInit() {
@@ -61,13 +63,26 @@ export class ArtistListComponent implements OnInit,AfterViewInit, OnChanges {
 
   
   toggleArtistInfo(artist:any){
-    if(!this.artistInfoDialog.nativeElement.open){
-      this.artistInfoArtist = artist
-      this.artistInfoDialog.nativeElement.show()
-    }else{
-      this.artistInfoDialog.nativeElement.close()
-      this.artistInfoArtist = undefined
-    }
+    this.clickcount += 1
+    setTimeout(()=>{
+      if(this.clickcount === 1){
+        if(!this.artistInfoDialog.nativeElement.open){
+          this.artistInfoArtist = artist
+          this.artistInfoDialog.nativeElement.show()
+        }else{
+          this.artistInfoDialog.nativeElement.close()
+          this.artistInfoArtist = undefined
+        }
+        this.clickcount = 0
+      }
+    },250)
+
+  }
+
+  queueArtist(artist:any){
+    this.clickcount += 1
+    this.player.playNewSongList(artist.songs)
+    this.clickcount = 0
   }
 
   searchChanged($event){
