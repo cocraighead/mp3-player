@@ -45,6 +45,10 @@
     border-radius: 5px;
 }
 
+.queue-btn-flash{
+    background-color: rgb(144 223 210);
+}
+
 .thin-radio-btn{
     margin: 4px;
     width: 5%;

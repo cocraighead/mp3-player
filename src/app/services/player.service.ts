@@ -24,6 +24,7 @@ export class PlayerService {
   currentSong?:song
   currentVolume:number = 0.5
   state:States = States.ST
+  queueLitUp:boolean = false
 
   constructor(@Inject(DOCUMENT) private document: Document) { 
     this.mainPlayer = this.document.getElementById("AudioTag")
@@ -75,12 +76,21 @@ export class PlayerService {
     if(this.songQueue.empty()){
       songList.forEach(song => {
         this.songQueue.add(song)
+        this.songRecentlyAdded()
       })
     }
   }
 
+  songRecentlyAdded(){
+    this.queueLitUp = true
+    setTimeout(()=>{
+      this.queueLitUp = false
+    },100)
+  }
+
   playNewSongList(songs:song[]){
     this.songQueue.addArr(songs,this.shuffleOn,true)
+    this.songRecentlyAdded()
     this.playNext()
   }
 

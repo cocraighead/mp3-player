@@ -18,7 +18,7 @@
     <mat-slider min="0" max="1" step="0.1" value="0.5" aria-label="volume" (change)="setNewVolume($event)"></mat-slider>
 
     <div class="queue-wrapper">
-        <button class="queue-btn" 
+        <button [ngClass]="{'queue-btn': true, 'queue-btn-flash': player.queueLitUp}" 
             (click)="toggleQueue()" 
             (drop)="queueButtonDrop($event)" 
             (dragover)="queueButtonDragover($event)"
