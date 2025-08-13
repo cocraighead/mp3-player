@@ -11,7 +11,8 @@
 
 .album-list-card{
   margin: 16px;
-  width: 8%;
+  width: 150px;
+  height: 172px;
 }
 
 .album-list-card:hover{
@@ -24,15 +25,26 @@
   height: 150px;
 }
 
-.album-list-img:hover{
+/* Apply styles to .child when .parent is hovered */
+.album-list-card:hover .album-list-img {
   border-color: rgb(214, 167, 47);
-  border-width: .1;
+  border-width: 2px 2px 2px 2px;
   border-style: solid;
   transition-delay:90ms;
 }
 
 .album-list-name{
   text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  display: block;
+  text-overflow: ellipsis;
+  width: 100%;
+}
+
+/* Apply styles to .child when .parent is hovered */
+.album-list-card:hover .album-list-name {
+  color: rgb(214, 167, 47);
 }
 
 .album-info-dialog{
