@@ -23,6 +23,7 @@
 
 .active-toggle{
     background-color: rgb(214, 167, 47);
+    box-shadow: 5px 5px 5px 5px rgb(226, 196, 97);
 }
 
 .active-submit-button{

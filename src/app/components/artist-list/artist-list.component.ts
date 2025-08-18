@@ -11,6 +11,7 @@ export class ArtistListComponent implements OnInit,AfterViewInit, OnChanges {
   @Input() songs:song[]
   @Input() centerViewType:Number
   @Input() currentPlaylist:playlist
+  @Input() isArtist: boolean
   @ViewChild('ArtistInfoDialog') artistInfoDialog: ElementRef;
   artists:any
   filteredArtists:any
@@ -23,8 +24,7 @@ export class ArtistListComponent implements OnInit,AfterViewInit, OnChanges {
   ngOnInit() {
     var artistDic = {}
     for(var i=0;i<this.songs.length;i++){
-      // var lowerCaseArtist = this.songs[i].artist.toLowerCase();
-      var lowerCaseArtist = this.songs[i].artist
+      var lowerCaseArtist = this.isArtist ? this.songs[i].artist : this.songs[i].album
       if(artistDic[lowerCaseArtist]){
         artistDic[lowerCaseArtist].push(this.songs[i])
       }else{
@@ -38,7 +38,7 @@ export class ArtistListComponent implements OnInit,AfterViewInit, OnChanges {
       this.artists.push({
         name: keys[i],
         songs: artistDic[keys[i]],
-        imgPath: 'assets/artists/' + keys[i] + '.jpg'
+        imgPath: (this.isArtist ? 'assets/artists/' : 'assets/albums/') + keys[i] + '.jpg'
       })
     }
     this.artists.sort((a,b)=>{

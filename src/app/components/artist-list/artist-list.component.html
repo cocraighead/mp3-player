@@ -15,7 +15,7 @@
 <div class="artist-list-wrapper">
   <ng-container *ngFor="let artist of filteredArtists">
     <div class="artist-list-card" (click)="toggleArtistInfo(artist)" (dblclick)="queueArtist(artist)">
-      <img class="artist-list-img" src="{{artist.imgPath}}" onerror="this.onerror=null; this.src='assets/artists/artist-default.jpg'" draggable="false">
+      <img class="artist-list-img" src="{{artist.imgPath}}" onerror="this.onerror=null; this.src='assets/albums/album-default.jpg'" draggable="false">
       <div class="artist-list-name">{{artist.name}}</div>
     </div>
   </ng-container>
