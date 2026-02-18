@@ -1,7 +1,7 @@
 import { Component, OnInit,ViewChild,ElementRef } from '@angular/core';
 
 import { PlayerService } from '../../services/player.service';
-import { song, SongQueue } from '../../types/types';
+import { song, SongQueue, States } from '../../types/types';
 
 @Component({
   selector: 'app-radio',
@@ -35,6 +35,24 @@ export class RadioComponent implements OnInit {
     this.reEnterCachedSong()
     // setup save of current song
     this.setUpSaveCurrentSong()
+
+    // add key event listeners for radio
+    document.onkeyup = (event) => {
+      if(event.code == "ArrowRight"){
+        this.player.playNext()
+      }
+      if(event.code == "ArrowLeft"){
+        this.player.playPrevious()
+      }
+      if(event.code == "Space"){
+        if(this.player.state === States.PL){
+          this.player.pause()
+        }else{
+          this.player.play()
+        }
+        
+      }
+    }
   }
 
   playClicked(){

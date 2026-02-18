@@ -97,3 +97,9 @@ export class SongQueue{
   }
 
 };
+
+export enum States {
+  PL,
+  PU,
+  ST,
+}

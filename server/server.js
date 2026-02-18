@@ -63,8 +63,9 @@ async function downloadSong(browser,context,ytlink,pageTitle){
         fs.copyFile(filePath, desitinationPath, (err) => {
             if(err){
                 console.error(err);
+            }else{
+                console.log('File copied successfully!');
             }
-            console.log('File copied successfully!');
         })
         // Teardown
         page.close()
@@ -132,6 +133,7 @@ app.post('/api/searchyoutube', async (req, res) => {
             // find title
             let titleDiv = await page.locator('#title > h1')
             let titleText = await titleDiv.innerText()
+            titleText = cleanSongName(titleText)
             console.log('titleText',titleText)
             downloadSong(browser,context,page.url(),titleText)
             await page.bringToFront()
@@ -313,24 +315,40 @@ function getIds(fullDownloadFolderPath){
 
 function getNewId(fullDownloadFolderPath){
     var ids = getIds(fullDownloadFolderPath)
-    ids.sort(function compareFn(a, b) {
-        if (Number(a) < Number(b)) {
-          return -1;
-        }
-        if (Number(a) > Number(b)) {
-          return 1;
-        }
-        // a must be equal to b
-        return 0;
-    })
-    var prev = -1
-    for(var i=0;i<ids.length;i++){
-        if(Number(ids[i])-1 !== prev){
-            return ids[i]-1
-        }
-        prev = Number(ids[i])
-    }
+    // ids.sort(function compareFn(a, b) {
+    //     if (Number(a) < Number(b)) {
+    //       return -1;
+    //     }
+    //     if (Number(a) > Number(b)) {
+    //       return 1;
+    //     }
+    //     // a must be equal to b
+    //     return 0;
+    // })
+    // var prev = -1
+    // for(var i=0;i<ids.length;i++){
+    //     if(Number(ids[i])-1 !== prev){
+    //         return ids[i]-1
+    //     }
+    //     prev = Number(ids[i])
+    // }
     return Number(ids[ids.length-1]) + 1
+}
+
+function cleanSongName(nameString){
+    var newName = ''
+    for(var i=0;i<nameString.length;i++){
+        var c = nameString[i]
+        if(
+            (c >= '0' && c <= '9') ||
+            (c >= 'A' && c <= 'Z') ||
+            (c >= 'a' && c <= 'z') ||
+            (c == ' ')
+        ){
+            newName += c
+        }
+    }
+    return newName
 }
 
 

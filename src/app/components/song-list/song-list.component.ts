@@ -21,7 +21,9 @@ export class SongListComponent implements OnInit,AfterViewInit, OnChanges {
   filteredSongs:song[]
   @ViewChild('SongInfoDialog') songInfoDialog: ElementRef;
   @ViewChild('AddSongDialog') addSongDialog: ElementRef;
+  @ViewChild('SongContextMenu') songContextMenu: ElementRef;
   songInfoSong:song
+  songContextSong:song
   songInfoAlbumArtPath:string
   songInfoArtisArtPath : string
   updateSongForm = new FormGroup({
@@ -221,6 +223,32 @@ export class SongListComponent implements OnInit,AfterViewInit, OnChanges {
     var assetsPath = album ? 'assets/albums/' : 'assets/artists/'
     var imgPath = assetsPath + entity + '.jpg'
     return imgPath
+  }
+
+  songRightClick(event, song){
+    event.preventDefault(); 
+    if(!this.songContextMenu.nativeElement.open){
+      this.songContextSong = song
+      let menuClass = 'position: fixed; margin: 0px;'
+      menuClass += ' left: ' + event.pageX + 'px; ' + 'top: ' + event.pageY + 'px;'
+      this.songContextMenu.nativeElement.setAttribute('style', menuClass);
+      this.songContextMenu.nativeElement.show()
+    }
+  }
+
+  addSongToQueue(event,front){
+    event.preventDefault();
+    let q = this.player.getQueue()
+    if(front){
+      q.addNext(this.songContextSong)
+    }else{
+      q.add(this.songContextSong)
+    }
+    this.songContextMenu.nativeElement.close()
+  }
+
+  closeSongContextMenu(event){
+    this.songContextMenu.nativeElement.close()
   }
 
 }

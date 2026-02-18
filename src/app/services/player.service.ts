@@ -2,14 +2,8 @@ import { Injectable, Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { Observable, BehaviorSubject } from 'rxjs';
 
-import { song, SongQueue } from '../types/types';
+import { song, SongQueue, States } from '../types/types';
 
-
-enum States {
-  PL,
-  PU,
-  ST,
-}
 
 @Injectable({
   providedIn: 'root'
